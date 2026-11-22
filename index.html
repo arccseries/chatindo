@@ -19,6 +19,7 @@ button{font-family:inherit}
 .screen.active{display:flex}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media(min-width:560px){.screen{height:calc(100% - 32px);margin:16px 0;border-radius:26px;box-shadow:0 20px 60px rgba(0,0,0,.35)}}
+.banner-top{width:100%;height:160px;object-fit:cover;display:block;flex-shrink:0}
 
 /* AUTH */
 .auth{background:var(--grad)}
@@ -103,9 +104,11 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
 @keyframes pop{from{opacity:0;transform:scale(.94) translateY(6px)}to{opacity:1;transform:none}}
 .m .who{display:flex;align-items:center;font-size:12.5px;font-weight:700;margin-bottom:2px}
 .m .t{display:block;text-align:right;font-size:10.5px;color:var(--sub);margin-top:1px}
+.m img.chat-img{width:100%;max-width:220px;border-radius:12px;display:block;margin:2px 0 4px;cursor:pointer}
 .composer{display:flex;gap:8px;padding:10px;background:#fff;flex-shrink:0;align-items:center;border-top:1px solid var(--line)}
 .composer input{margin:0;border-radius:24px;flex:1;padding:13px 18px}
 .composer button{width:48px;height:48px;border-radius:50%;border:0;background:var(--grad);color:#fff;font-size:19px;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.35)}
+.composer .photobtn{background:#eef2f1;color:#0f766e;box-shadow:none;font-size:20px}
 
 /* OWNER */
 .ownerhead{background:linear-gradient(135deg,#1e1b4b,#7c3aed)}
@@ -139,6 +142,7 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
 </style>
 </head>
 <body>
+<img src="banner.jpg" class="banner-top" alt="ChatIndo Banner" onerror="this.style.display='none'">
 
 <!-- ============ LOGIN (3 menu) ============ -->
 <div id="login" class="screen auth">
@@ -212,6 +216,8 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   </header>
   <div class="msgs" id="msgs"></div>
   <form class="composer" id="form">
+    <button type="button" class="photobtn" id="photoBtn" title="Kirim Foto">📷</button>
+    <input type="file" id="chatPhoto" accept="image/*" hidden>
     <input id="msgIn" placeholder="Ketik pesan" autocomplete="off">
     <button type="submit">➤</button>
   </form>
@@ -497,7 +503,7 @@ $("cGo").onclick = async () => {
 };
 
 /* ---------- BUAT GRUP ---------- */
-let gPick = {};   // uid -> checked
+let gPick = {};
 $("grpBtn").onclick = async () => {
   closeFab(); $("gName").value = ""; $("gUser").value = ""; $("gErr").textContent = ""; gPick = {};
   for (const pid of Object.keys(dmMap)) { await loadUser(pid); gPick[pid] = false; }
@@ -564,7 +570,10 @@ function addMsg(m, isGroup) {
   const mine = m.from === me.uid;
   const d = document.createElement("div"); d.className = "m" + (mine ? " me" : "");
   if (isGroup && !mine) { const w = nameEl(m.name || "Anggota", m.from, "who"); w.style.color = colorOf(m.from); d.appendChild(w); }
-  const tx = document.createElement("span"); tx.textContent = m.text; d.appendChild(tx);
+  if (m.photo) {
+    const img = document.createElement("img"); img.className = "chat-img"; img.src = m.photo; img.onclick = () => window.open(m.photo, "_blank"); d.appendChild(img);
+  }
+  if (m.text) { const tx = document.createElement("span"); tx.textContent = m.text; d.appendChild(tx); }
   const t = document.createElement("span"); t.className = "t"; t.textContent = fmtTime(m.ts); d.appendChild(t);
   box.appendChild(d); box.scrollTop = box.scrollHeight;
 }
@@ -588,6 +597,39 @@ $("form").onsubmit = async e => {
       await update(ref(db), upd);
     }
   } catch (err) { toast("Pesan gagal terkirim"); }
+};
+
+/* ---------- KIRIM FOTO DI CHAT ---------- */
+$("photoBtn").onclick = () => $("chatPhoto").click();
+$("chatPhoto").onchange = async e => {
+  const f = e.target.files[0]; $("chatPhoto").value = ""; if (!f || !current) return;
+  toast("Mengirim foto...");
+  const img = new Image(), fr = new FileReader();
+  fr.onload = () => { img.src = fr.result; };
+  img.onload = async () => {
+    const maxW = 800; let w = img.width, h = img.height;
+    if (w > maxW) { h = h * maxW / w; w = maxW; }
+    const c = document.createElement("canvas"); c.width = w; c.height = h;
+    c.getContext("2d").drawImage(img, 0, 0, w, h);
+    const photo = c.toDataURL("image/jpeg", .75);
+    const ts = Date.now();
+    try {
+      if (current.type === "dm") {
+        const peer = current.user;
+        await push(ref(db, "chats/" + chatId(me.uid, peer.uid) + "/messages"), { from: me.uid, text: "", photo, ts });
+        await update(ref(db), {
+          ["userChats/" + me.uid + "/" + peer.uid]: { last: "📷 Foto", ts },
+          ["userChats/" + peer.uid + "/" + me.uid]: { last: "📷 Foto", ts }
+        });
+      } else {
+        const g = current.group;
+        await push(ref(db, "groupMsgs/" + g.id), { from: me.uid, name: me.name, text: "", photo, ts });
+        const upd = {}; Object.keys(g.members || {}).forEach(u => upd["userGroups/" + u + "/" + g.id] = { last: me.name + ": 📷 Foto", ts });
+        await update(ref(db), upd);
+      }
+    } catch (err) { toast("Foto gagal terkirim, foto terlalu besar"); }
+  };
+  fr.readAsDataURL(f);
 };
 
 /* ---------- INFO GRUP ---------- */
