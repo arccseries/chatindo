@@ -7,39 +7,158 @@
 <title>ChatIndo</title>
 <style>
 :root{
-  --p1:#0f766e;--p2:#16a34a;--acc:#22c55e;--bg:#eef2f1;--tx:#0f1f1c;--sub:#6b7c78;
-  --me:#d7f9d2;--card:#ffffff;--line:#e6ecea;--blue:#1d9bf0;--danger:#e5484d;
+  --p1:#0f766e;
+  --p2:#16a34a;
+  --acc:#22c55e;
+  --tx:#0f1f1c;
+  --sub:#6b7c78;
+  --me:#d7f9d2;
+  --card:#ffffff;
+  --line:#e6ecea;
+  --blue:#1d9bf0;
+  --danger:#e5484d;
   --grad:linear-gradient(135deg,var(--p1),var(--p2));
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--tx)}
-body{background:radial-gradient(circle at 20% 10%,#34d399 0,transparent 40%),radial-gradient(circle at 90% 90%,#0ea5a4 0,transparent 45%),#0f766e;display:flex;justify-content:center}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+html,body{
+  height:100%;
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  color:var(--tx);
+}
+body{
+  background:radial-gradient(circle at 20% 10%,#34d399 0,transparent 40%),
+  radial-gradient(circle at 90% 90%,#0ea5a4 0,transparent 45%),#0f766e;
+  display:flex;
+  justify-content:center;
+}
 button{font-family:inherit}
-.screen{display:none;height:100%;width:100%;max-width:520px;background:var(--card);position:relative;flex-direction:column;overflow:hidden;animation:fade .25s ease}
+.screen{
+  display:none;
+  height:100%;
+  width:100%;
+  max-width:520px;
+  background:var(--card);
+  position:relative;
+  flex-direction:column;
+  overflow:hidden;
+  animation:fade .25s ease;
+}
 .screen.active{display:flex}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media(min-width:560px){.screen{height:calc(100% - 32px);margin:16px 0;border-radius:26px;box-shadow:0 20px 60px rgba(0,0,0,.35)}}
-.banner-top{width:100%;height:160px;object-fit:cover;display:block;flex-shrink:0}
-
+@keyframes fade{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+@media(min-width:560px){
+  .screen{
+    height:calc(100% - 32px);
+    margin:16px 0;
+    border-radius:26px;
+    box-shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+}
+.banner-top{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  display:block;
+  flex-shrink:0;
+}
 /* AUTH */
 .auth{background:var(--grad)}
-.hero{padding:44px 24px 26px;text-align:center;color:#fff}
-.logo{width:84px;height:84px;border-radius:26px;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;font-size:42px;margin:0 auto 14px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.hero{
+  padding:30px 24px 20px;
+  text-align:center;
+  color:#fff;
+}
+.logo{
+  width:84px;
+  height:84px;
+  border-radius:26px;
+  background:rgba(255,255,255,.2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  margin:0 auto 14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);
+}
 .hero h1{font-size:30px;letter-spacing:.3px}
 .hero p{opacity:.85;font-size:14px;margin-top:4px}
-.card{background:#fff;border-radius:28px 28px 0 0;flex:1;padding:22px 24px 30px;overflow-y:auto}
-@media(min-width:560px){.card{border-radius:28px 28px 0 0}}
-.seg{display:flex;background:#eef2f1;border-radius:14px;padding:4px;margin-bottom:20px}
-.seg button{flex:1;border:0;background:none;padding:10px 4px;border-radius:11px;font-size:13px;font-weight:600;color:var(--sub);cursor:pointer;transition:.2s}
-.seg button.on{background:#fff;color:var(--p1);box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.card{
+  background:#fff;
+  border-radius:28px 28px 0 0;
+  flex:1;
+  padding:22px 24px 30px;
+  overflow-y:auto;
+}
+.seg{
+  display:flex;
+  background:#eef2f1;
+  border-radius:14px;
+  padding:4px;
+  margin-bottom:20px;
+}
+.seg button{
+  flex:1;
+  border:0;
+  background:none;
+  padding:10px 4px;
+  border-radius:11px;
+  font-size:13px;
+  font-weight:600;
+  color:var(--sub);
+  cursor:pointer;
+  transition:.2s;
+}
+.seg button.on{
+  background:#fff;
+  color:var(--p1);
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
 .card h2{font-size:20px;margin-bottom:4px}
 .card .hint{color:var(--sub);font-size:13px;margin-bottom:16px}
 .field{position:relative;margin-bottom:12px}
-.field span{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:17px}
-input[type=text],input[type=password],input:not([type]){width:100%;padding:14px 14px 14px 44px;border:1.5px solid var(--line);border-radius:14px;font-size:16px;background:#f8fafa;outline:none;transition:.2s;font-family:inherit}
+.field span{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:17px;
+}
+input{
+  width:100%;
+  padding:14px 14px 14px 44px;
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  font-size:16px;
+  background:#f8fafa;
+  outline:none;
+  transition:.2s;
+  font-family:inherit;
+}
 .field.np input{padding-left:14px}
-input:focus{border-color:var(--p2);background:#fff;box-shadow:0 0 0 4px rgba(34,197,94,.15)}
-.btn{width:100%;padding:14px;border:0;border-radius:14px;background:var(--grad);color:#fff;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 16px rgba(22,163,74,.3);transition:.15s}
+input:focus{
+  border-color:var(--p2);
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(34,197,94,.15);
+}
+.btn{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:14px;
+  background:var(--grad);
+  color:#fff;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  box-shadow:0 6px 16px rgba(22,163,74,.3);
+}
 .btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.6}
 .btn.ghost{background:#eef2f1;color:var(--tx);box-shadow:none}
@@ -47,104 +166,521 @@ input:focus{border-color:var(--p2);background:#fff;box-shadow:0 0 0 4px rgba(34,
 .err{color:var(--danger);font-size:13px;min-height:18px;margin:2px 0 8px;text-align:center}
 .small{text-align:center;margin-top:16px;font-size:14px;color:var(--sub)}
 .link{color:var(--p1);font-weight:700;cursor:pointer}
-
 /* WELCOME / PROFILE */
-.center{justify-content:center;padding:30px;background:var(--grad);color:#fff;text-align:center}
+.center{
+  justify-content:center;
+  padding:30px;
+  background:var(--grad);
+  color:#fff;
+  text-align:center;
+}
 .center h1{font-size:28px;line-height:1.25;margin-bottom:10px}
 .center p{opacity:.9;margin-bottom:26px;font-size:15px}
 .center .btn{background:#fff;color:var(--p1)}
-.pcard{background:#fff;color:var(--tx);border-radius:26px;padding:26px 22px;box-shadow:0 12px 40px rgba(0,0,0,.2)}
+.pcard{
+  background:#fff;
+  color:var(--tx);
+  border-radius:26px;
+  padding:26px 22px;
+  box-shadow:0 12px 40px rgba(0,0,0,.2);
+}
 .pcard h2{margin-bottom:4px}
 .pcard .hint{color:var(--sub);font-size:13px;margin-bottom:16px}
 .pcard .btn{background:var(--grad);color:#fff}
-
 /* AVATAR */
-.avatar{width:48px;height:48px;border-radius:50%;background:#90a4ae center/cover no-repeat;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:19px;position:relative}
-.photo-pick{width:112px;height:112px;font-size:38px;margin:0 auto 8px;cursor:pointer;border:3px dashed #b6c4c0;background-color:#f1f5f4;color:#8a9a96}
-.vb{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--blue);color:#fff;font-size:10px;font-weight:900;margin-left:5px;vertical-align:middle;flex-shrink:0}
-
+.avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#90a4ae center/cover no-repeat;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-weight:700;
+  font-size:19px;
+  position:relative;
+}
+.photo-pick{
+  width:112px;
+  height:112px;
+  font-size:38px;
+  margin:0 auto 8px;
+  cursor:pointer;
+  border:3px dashed #b6c4c0;
+  background-color:#f1f5f4;
+  color:#8a9a96;
+}
+.vb{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--blue);
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  margin-left:5px;
+  vertical-align:middle;
+}
 /* HEADER */
-header{background:var(--grad);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.15);z-index:2}
+header{
+  background:var(--grad);
+  color:#fff;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-shrink:0;
+  box-shadow:0 2px 12px rgba(0,0,0,.15);
+  z-index:2;
+}
 header .avatar{width:40px;height:40px;font-size:16px}
 header .ttl{flex:1;min-width:0}
-header .ttl b{font-size:17px;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
-header .ttl small{display:block;opacity:.8;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer}
-
+header .ttl b{
+  font-size:17px;
+  display:flex;
+  align-items:center;
+  white-space:nowrap;
+  overflow:hidden;
+}
+header .ttl small{
+  display:block;
+  opacity:.8;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+header .ic{
+  background:rgba(255,255,255,.15);
+  border:0;
+  color:#fff;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  font-size:18px;
+  cursor:pointer;
+}
 /* HOME LIST */
 .search{padding:10px 14px;background:#fff;border-bottom:1px solid var(--line)}
-.search input{padding:11px 14px 11px 40px;border-radius:22px;font-size:15px;background:#f1f5f4 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><text y='13' font-size='13'>🔍</text></svg>") no-repeat 14px center}
+.search input{
+  padding:11px 14px 11px 40px;
+  border-radius:22px;
+  font-size:15px;
+  background:#f1f5f4;
+}
 .list{flex:1;overflow-y:auto;padding-bottom:90px}
-.item{display:flex;gap:12px;padding:12px 16px;align-items:center;cursor:pointer;transition:.15s}
+.item{
+  display:flex;
+  gap:12px;
+  padding:12px 16px;
+  align-items:center;
+  cursor:pointer;
+  transition:.15s;
+}
 .item:hover,.item:active{background:#f3f7f6}
-.item .info{flex:1;min-width:0;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:-12px}
+.item .info{
+  flex:1;
+  min-width:0;
+  border-bottom:1px solid var(--line);
+  padding-bottom:12px;
+  margin-bottom:-12px;
+}
 .item .top{display:flex;justify-content:space-between;align-items:center}
 .item .nm{font-weight:700;display:flex;align-items:center;min-width:0}
 .item .nm .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .item .tm{font-size:12px;color:var(--sub);flex-shrink:0;margin-left:6px}
-.item .last{color:var(--sub);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
-.gtag{font-size:10px;background:#e0f5ea;color:var(--p1);border-radius:6px;padding:1px 6px;margin-right:6px;font-weight:700}
+.item .last{
+  color:var(--sub);
+  font-size:14px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  margin-top:2px;
+}
+.gtag{
+  font-size:10px;
+  background:#e0f5ea;
+  color:var(--p1);
+  border-radius:6px;
+  padding:1px 6px;
+  margin-right:6px;
+  font-weight:700;
+}
 .empty{text-align:center;color:var(--sub);padding:60px 28px;font-size:14px;line-height:1.6}
 .empty .big{font-size:52px;margin-bottom:8px}
-
 /* FAB */
-.fabwrap{position:absolute;left:18px;bottom:20px;z-index:5;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-.fab{width:58px;height:58px;border-radius:20px;border:0;background:var(--grad);color:#fff;font-size:28px;cursor:pointer;box-shadow:0 8px 22px rgba(22,163,74,.45);transition:.2s}
+.fabwrap{
+  position:absolute;
+  left:18px;
+  bottom:20px;
+  z-index:5;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:10px;
+}
+.fab{
+  width:58px;
+  height:58px;
+  border-radius:20px;
+  border:0;
+  background:var(--grad);
+  color:#fff;
+  font-size:28px;
+  cursor:pointer;
+  box-shadow:0 8px 22px rgba(22,163,74,.45);
+  transition:.2s;
+}
 .fab.open{transform:rotate(45deg)}
 .fabmenu{display:none;flex-direction:column;gap:8px}
 .fabmenu.show{display:flex;animation:fade .2s ease}
-.fabmenu button{background:#fff;border:0;border-radius:16px;padding:12px 18px;font-size:15px;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.18);cursor:pointer;text-align:left}
-
+.fabmenu button{
+  background:#fff;
+  border:0;
+  border-radius:16px;
+  padding:12px 18px;
+  font-size:15px;
+  font-weight:600;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+  cursor:pointer;
+  text-align:left;
+}
 /* CHAT ROOM */
-.msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:3px;
-  background:#e9efe9 radial-gradient(rgba(15,118,110,.07) 1.5px,transparent 1.5px) 0 0/22px 22px}
-.day{align-self:center;background:rgba(255,255,255,.85);color:var(--sub);font-size:12px;padding:4px 12px;border-radius:12px;margin:8px 0;box-shadow:0 1px 2px rgba(0,0,0,.06)}
-.m{max-width:80%;padding:7px 11px 5px;border-radius:16px 16px 16px 4px;background:#fff;align-self:flex-start;font-size:15px;word-wrap:break-word;white-space:pre-wrap;box-shadow:0 1px 2px rgba(0,0,0,.08);animation:pop .18s ease}
-.m.me{background:var(--me);border-radius:16px 16px 4px 16px;align-self:flex-end}
-@keyframes pop{from{opacity:0;transform:scale(.94) translateY(6px)}to{opacity:1;transform:none}}
-.m .who{display:flex;align-items:center;font-size:12.5px;font-weight:700;margin-bottom:2px}
-.m .t{display:block;text-align:right;font-size:10.5px;color:var(--sub);margin-top:1px}
-.m img.chat-img{width:100%;max-width:220px;border-radius:12px;display:block;margin:2px 0 4px;cursor:pointer}
-.composer{display:flex;gap:8px;padding:10px;background:#fff;flex-shrink:0;align-items:center;border-top:1px solid var(--line)}
-.composer input{margin:0;border-radius:24px;flex:1;padding:13px 18px}
-.composer button{width:48px;height:48px;border-radius:50%;border:0;background:var(--grad);color:#fff;font-size:19px;cursor:pointer;box-shadow:0 4px 12px rgba(22,163,74,.35)}
-.composer .photobtn{background:#eef2f1;color:#0f766e;box-shadow:none;font-size:20px}
-
+.msgs{
+  flex:1;
+  overflow-y:auto;
+  padding:14px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  background:#e9efe9 radial-gradient(rgba(15,118,110,.07) 1.5px,transparent 1.5px) 0 0/22px 22px;
+}
+.day{
+  align-self:center;
+  background:rgba(255,255,255,.85);
+  color:var(--sub);
+  font-size:12px;
+  padding:4px 12px;
+  border-radius:12px;
+  margin:8px 0;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.m{
+  max-width:80%;
+  padding:7px 11px 5px;
+  border-radius:16px 16px 16px 4px;
+  background:#fff;
+  align-self:flex-start;
+  font-size:15px;
+  word-wrap:break-word;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.08);
+  animation:pop .18s ease;
+}
+.m.me{
+  background:var(--me);
+  border-radius:16px 16px 4px 16px;
+  align-self:flex-end;
+}
+@keyframes pop{
+  from{opacity:0;transform:scale(.94) translateY(6px)}
+  to{opacity:1;transform:none}
+}
+.m .who{
+  display:flex;
+  align-items:center;
+  font-size:12.5px;
+  font-weight:700;
+  margin-bottom:2px;
+}
+.m .t{
+  display:block;
+  text-align:right;
+  font-size:10.5px;
+  color:var(--sub);
+  margin-top:1px;
+}
+.m img.chat-img{
+  width:100%;
+  max-width:220px;
+  border-radius:12px;
+  display:block;
+  margin:2px 0 4px;
+  cursor:pointer;
+}
+.m .sticker{
+  font-size:64px;
+  line-height:1;
+  display:block;
+}
+.m audio{
+  width:200px;
+  max-width:100%;
+  margin:4px 0;
+}
+.composer{
+  display:flex;
+  gap:6px;
+  padding:10px;
+  background:#fff;
+  flex-shrink:0;
+  align-items:center;
+  border-top:1px solid var(--line);
+}
+.composer input{
+  margin:0;
+  border-radius:24px;
+  flex:1;
+  padding:13px 14px;
+}
+.composer button{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  border:0;
+  background:var(--grad);
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(22,163,74,.35);
+}
+.composer .photobtn{
+  background:#eef2f1;
+  color:#0f766e;
+  box-shadow:none;
+}
+.composer .vnbtn{
+  background:#fff3cd;
+  color:#b45309;
+  box-shadow:none;
+}
+.composer .vnbtn.rec{
+  background:#e5484d;
+  color:#fff;
+  animation:blink 1s infinite;
+}
+@keyframes blink{50%{opacity:.5}}
 /* OWNER */
 .ownerhead{background:linear-gradient(135deg,#1e1b4b,#7c3aed)}
 .stats{display:flex;gap:8px;padding:12px 14px;background:#fff}
 .stat{flex:1;background:#f5f3ff;border-radius:14px;padding:10px;text-align:center}
 .stat b{display:block;font-size:20px;color:#6d28d9}
 .stat span{font-size:11px;color:var(--sub)}
-.dot{position:absolute;right:0;bottom:0;width:14px;height:14px;border-radius:50%;border:2.5px solid #fff;background:#b0bec5}
+.dot{
+  position:absolute;
+  right:0;
+  bottom:0;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  border:2.5px solid #fff;
+  background:#b0bec5;
+}
 .dot.on{background:var(--acc)}
-.vbtn{border:0;border-radius:12px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;background:#e8f4fe;color:var(--blue);flex-shrink:0}
+.vbtn{
+  border:0;
+  border-radius:12px;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  background:#e8f4fe;
+  color:var(--blue);
+  flex-shrink:0;
+}
 .vbtn.rm{background:#fdecec;color:var(--danger)}
-
 /* MODAL */
-.modal{position:fixed;inset:0;background:rgba(10,20,18,.55);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(10,20,18,.55);
+  backdrop-filter:blur(3px);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  z-index:20;
+}
 .modal.show{display:flex}
-.box{background:#fff;border-radius:26px 26px 0 0;padding:22px;width:100%;max-width:520px;max-height:88%;overflow-y:auto;animation:up .25s ease}
-@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
-@media(min-width:560px){.modal{align-items:center}.box{border-radius:26px}}
+.box{
+  background:#fff;
+  border-radius:26px 26px 0 0;
+  padding:22px;
+  width:100%;
+  max-width:520px;
+  max-height:88%;
+  overflow-y:auto;
+  animation:up .25s ease;
+}
+@keyframes up{
+  from{transform:translateY(40px);opacity:0}
+  to{transform:none;opacity:1}
+}
+@media(min-width:560px){
+  .modal{align-items:center}
+  .box{border-radius:26px}
+}
 .box h3{margin-bottom:4px;font-size:19px}
 .box .hint{font-size:13px;color:var(--sub);margin-bottom:14px}
 .row{display:flex;gap:8px;margin-top:6px}
 .chk{display:flex;align-items:center;gap:10px;padding:8px 4px;cursor:pointer}
 .chk input{width:20px;height:20px;padding:0;margin:0;accent-color:var(--p2)}
 .chk .avatar{width:36px;height:36px;font-size:14px}
-.chklist{max-height:190px;overflow-y:auto;border:1.5px solid var(--line);border-radius:14px;padding:4px 10px;margin-bottom:10px}
+.chklist{
+  max-height:190px;
+  overflow-y:auto;
+  border:1.5px solid var(--line);
+  border-radius:14px;
+  padding:4px 10px;
+  margin-bottom:10px;
+}
 .mem{display:flex;align-items:center;gap:10px;padding:8px 0}
 .mem .avatar{width:38px;height:38px;font-size:15px}
 .mem small{color:var(--sub)}
-.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1f2d2a;color:#fff;padding:10px 18px;border-radius:22px;font-size:14px;z-index:50;opacity:0;transition:.3s;pointer-events:none;max-width:90%;text-align:center}
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:90px;
+  transform:translateX(-50%);
+  background:#1f2d2a;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:22px;
+  font-size:14px;
+  z-index:50;
+  opacity:0;
+  transition:.3s;
+  pointer-events:none;
+  max-width:90%;
+  text-align:center;
+}
 .toast.show{opacity:1}
+/* STATUS */
+.statusrow{
+  display:flex;
+  gap:12px;
+  padding:12px 14px;
+  background:#fff;
+  overflow-x:auto;
+  border-bottom:1px solid var(--line);
+  flex-shrink:0;
+}
+.sitem{
+  flex-shrink:0;
+  text-align:center;
+  width:62px;
+  cursor:pointer;
+}
+.sitem .avatar{
+  width:56px;
+  height:56px;
+  margin:0 auto 4px;
+  border:3px solid #22c55e;
+  font-size:20px;
+}
+.sitem.mine .avatar{border-color:#cbd5e1}
+.sitem span{
+  font-size:11px;
+  display:block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.stickgrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  margin:10px 0;
+}
+.stickgrid button{
+  font-size:42px;
+  background:#f1f5f4;
+  border:0;
+  border-radius:14px;
+  padding:10px;
+  cursor:pointer;
+}
+.tabrow{
+  display:flex;
+  gap:6px;
+  padding:8px 14px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.tabrow button{
+  flex:1;
+  border:0;
+  padding:9px;
+  border-radius:20px;
+  font-weight:700;
+  cursor:pointer;
+  background:#eef2f1;
+}
+.tabrow button.on{
+  background:var(--grad);
+  color:#fff;
+}
+.photo-view{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.92);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  flex-direction:column;
+  padding:20px;
+}
+.photo-view.show{display:flex}
+.photo-view img{
+  max-width:100%;
+  max-height:80vh;
+  border-radius:14px;
+}
+.photo-view button{
+  margin-top:16px;
+  background:#fff;
+  border:0;
+  padding:10px 22px;
+  border-radius:20px;
+  font-weight:700;
+  cursor:pointer;
+}
+.status-view{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:none;
+  z-index:100;
+  flex-direction:column;
+  color:#fff;
+}
+.status-view.show{display:flex}
+.status-view img{
+  width:100%;
+  height:70vh;
+  object-fit:cover;
+}
+.status-view .stxt{
+  padding:20px;
+  font-size:20px;
+  text-align:center;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 </style>
 </head>
 <body>
-<img src="banner.jpg" class="banner-top" alt="ChatIndo Banner" onerror="this.style.display='none'">
+<img src="banner.jpg" class="banner-top" alt="" onerror="this.style.display='none'">
 
-<!-- ============ LOGIN (3 menu) ============ -->
+<!-- LOGIN -->
 <div id="login" class="screen auth">
   <div class="hero">
     <div class="logo">💬</div>
@@ -167,7 +703,7 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   </div>
 </div>
 
-<!-- ============ MENU UTAMA ============ -->
+<!-- WELCOME -->
 <div id="welcome" class="screen center">
   <div class="logo">💬</div>
   <h1>Pengalaman Chat yang terbaik untuk anda</h1>
@@ -175,7 +711,7 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   <button class="btn" id="startBtn">Mulai</button>
 </div>
 
-<!-- ============ PROFIL ============ -->
+<!-- PROFIL -->
 <div id="profile" class="screen center" style="overflow-y:auto">
   <div class="pcard">
     <h2>Siapkan Profil</h2>
@@ -189,25 +725,32 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   </div>
 </div>
 
-<!-- ============ BERANDA ============ -->
+<!-- BERANDA -->
 <div id="home" class="screen">
   <header>
     <div class="avatar" id="meAv"></div>
     <div class="ttl"><b id="meName"></b><small id="meUser"></small></div>
     <button class="ic" id="logoutBtn" title="Keluar">⎋</button>
   </header>
+  <div class="tabrow">
+    <button id="tabChat" class="on">💬 Chat</button>
+    <button id="tabChan">📢 Saluran</button>
+  </div>
+  <div class="statusrow" id="statusRow"></div>
   <div class="search"><div class="field" style="margin:0"><input id="searchIn" placeholder="Cari chat"></div></div>
   <div class="list" id="chatList"></div>
   <div class="fabwrap">
     <div class="fabmenu" id="fabMenu">
       <button id="addBtn">👤 Tambah kontak</button>
       <button id="grpBtn">👥 Buat grup</button>
+      <button id="chanBtn">📢 Buat saluran</button>
+      <button id="statusBtn">🟢 Buat status</button>
     </div>
     <button class="fab" id="fab">+</button>
   </div>
 </div>
 
-<!-- ============ ROOM CHAT ============ -->
+<!-- ROOM CHAT -->
 <div id="room" class="screen">
   <header>
     <button class="ic" id="backBtn">←</button>
@@ -216,14 +759,16 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   </header>
   <div class="msgs" id="msgs"></div>
   <form class="composer" id="form">
-    <button type="button" class="photobtn" id="photoBtn" title="Kirim Foto">📷</button>
+    <button type="button" class="photobtn" id="photoBtn">📷</button>
     <input type="file" id="chatPhoto" accept="image/*" hidden>
+    <button type="button" class="photobtn" id="stickerBtn">😀</button>
     <input id="msgIn" placeholder="Ketik pesan" autocomplete="off">
+    <button type="button" class="vnbtn" id="vnBtn" title="Klik untuk VN">🎤</button>
     <button type="submit">➤</button>
   </form>
 </div>
 
-<!-- ============ PANEL OWNER ============ -->
+<!-- OWNER -->
 <div id="owner" class="screen">
   <header class="ownerhead">
     <div class="avatar" style="background:rgba(255,255,255,.2)">👑</div>
@@ -239,7 +784,7 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   <div class="list" id="ownList"></div>
 </div>
 
-<!-- ============ MODAL: TAMBAH KONTAK ============ -->
+<!-- MODAL TAMBAH KONTAK -->
 <div class="modal" id="modal">
   <div class="box">
     <h3>Tambah kontak</h3>
@@ -250,7 +795,7 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   </div>
 </div>
 
-<!-- ============ MODAL: BUAT GRUP ============ -->
+<!-- MODAL BUAT GRUP -->
 <div class="modal" id="gmodal">
   <div class="box">
     <h3>Buat grup</h3>
@@ -266,7 +811,7 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   </div>
 </div>
 
-<!-- ============ MODAL: INFO GRUP ============ -->
+<!-- MODAL INFO GRUP -->
 <div class="modal" id="imodal">
   <div class="box">
     <h3 id="iTitle"></h3>
@@ -283,7 +828,56 @@ header .ic{background:rgba(255,255,255,.15);border:0;color:#fff;width:38px;heigh
   </div>
 </div>
 
+<!-- MODAL STIKER -->
+<div class="modal" id="stickerModal">
+  <div class="box">
+    <h3>Pilih Stiker</h3>
+    <div class="stickgrid" id="stickGrid"></div>
+    <button class="btn ghost" id="stickClose">Tutup</button>
+  </div>
+</div>
+
+<!-- MODAL SALURAN -->
+<div class="modal" id="chanModal">
+  <div class="box">
+    <h3>Buat Saluran 📢</h3>
+    <p class="hint">Saluran itu kayak broadcast, cuma admin yang bisa kirim, semua pengikut bisa baca</p>
+    <div class="field np"><input id="chanName" placeholder="Nama saluran, contoh: Info Balikpapan"></div>
+    <div class="field np"><input id="chanDesc" placeholder="Deskripsi saluran (opsional)"></div>
+    <div class="err" id="chanErr"></div>
+    <div class="row"><button class="btn ghost" id="chanCancel">Batal</button><button class="btn" id="chanCreate">Buat Saluran</button></div>
+  </div>
+</div>
+
+<!-- MODAL STATUS -->
+<div class="modal" id="statusModal">
+  <div class="box">
+    <h3>Buat Status 🟢</h3>
+    <p class="hint">Status hilang otomatis setelah 24 jam</p>
+    <div class="field np"><input id="statusText" placeholder="Tulis status kamu..."></div>
+    <button class="btn ghost" id="statusPhotoBtn" style="margin-bottom:10px">📷 Tambah Foto Status</button>
+    <input type="file" id="statusPhoto" accept="image/*" hidden>
+    <div class="err" id="statusErr"></div>
+    <div class="row"><button class="btn ghost" id="statusCancel">Batal</button><button class="btn" id="statusPost">Posting</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+
+<div class="photo-view" id="photoView">
+  <img id="photoViewImg" src="">
+  <button id="photoViewClose">Tutup ✕</button>
+</div>
+
+<div class="status-view" id="statusView">
+  <div style="display:flex;justify-content:space-between;padding:14px;width:100%">
+    <b id="statusViewName"></b>
+    <button id="statusViewClose" style="background:#fff;border:0;padding:6px 14px;border-radius:20px;font-weight:700">✕</button>
+  </div>
+  <img id="statusViewImg" style="display:none">
+  <div class="stxt" id="statusViewText"></div>
+  <small id="statusViewTime" style="text-align:center;padding:10px;opacity:.7"></small>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -301,44 +895,106 @@ const firebaseConfig = {
   messagingSenderId: "198013276302",
   appId: "1:198013276302:web:874e3def9bbde4fd03f9df"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-
-/* Akun owner dibuat di Firebase Console (bukan di file ini). Email internalnya: */
 const OWNER_EMAIL = "arcowner@chatindo.app";
 
 const $ = id => document.getElementById(id);
-const show = id => { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); $(id).classList.add('active'); };
+
+const show = id => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+};
+
 const activeScreen = () => document.querySelector('.screen.active')?.id;
 
-let me = null, mode = "login", photoData = "", ownerAttempt = false;
-let unsubs = [], roomUnsub = null, current = null;
-let dmMap = {}, grpMap = {}, verified = {}, presence = {}, allUsers = {};
-const userCache = {}, groupCache = {};
-let renderTok = 0, lastDay = "";
+let me = null;
+let mode = "login";
+let photoData = "";
+let ownerAttempt = false;
+let unsubs = [];
+let roomUnsub = null;
+let current = null;
+let dmMap = {};
+let grpMap = {};
+let chanMap = {};
+let verified = {};
+let presence = {};
+let allUsers = {};
+let statusMap = {};
 
-/* ---------- helpers ---------- */
+const userCache = {};
+const groupCache = {};
+const chanCache = {};
+
+let renderTok = 0;
+let lastDay = "";
+let homeTab = "chat";
+let statusPhotoData = "";
+
 const emailOf = n => n.trim().toLowerCase().replace(/\s+/g, "_") + "@chatindo.app";
+
 const COLORS = ["#0f9d8a","#e57373","#7986cb","#f59e0b","#8e6bbf","#26a69a","#ef6c97","#5c9ce6","#7cb342","#ff8a65"];
-const colorOf = s => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0; return COLORS[h % COLORS.length]; };
+
+const colorOf = s => {
+  let h = 0;
+  for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  return COLORS[h % COLORS.length];
+};
+
 function setAvatar(el, u, label) {
   const t = label || (u && (u.name || u.username)) || "?";
-  if (u && u.photo) { el.style.backgroundImage = `url(${u.photo})`; el.textContent = ""; }
-  else { el.style.backgroundImage = ""; el.style.background = colorOf(t); el.textContent = t[0].toUpperCase(); }
+  if (u && u.photo) {
+    el.style.backgroundImage = `url(${u.photo})`;
+    el.textContent = "";
+  } else {
+    el.style.backgroundImage = "";
+    el.style.background = colorOf(t);
+    el.textContent = t[0].toUpperCase();
+  }
 }
+
 function nameEl(text, uid, cls) {
-  const s = document.createElement("span"); if (cls) s.className = cls;
-  const t = document.createElement("span"); t.className = "t"; t.textContent = text; s.appendChild(t);
-  if (uid && verified[uid]) { const b = document.createElement("span"); b.className = "vb"; b.textContent = "✓"; b.title = "Terverifikasi"; s.appendChild(b); }
-  s.style.display = "inline-flex"; s.style.alignItems = "center"; s.style.minWidth = "0";
+  const s = document.createElement("span");
+  if (cls) s.className = cls;
+  const t = document.createElement("span");
+  t.className = "t";
+  t.textContent = text;
+  s.appendChild(t);
+  if (uid && verified[uid]) {
+    const b = document.createElement("span");
+    b.className = "vb";
+    b.textContent = "✓";
+    b.title = "Terverifikasi";
+    s.appendChild(b);
+  }
+  s.style.display = "inline-flex";
+  s.style.alignItems = "center";
+  s.style.minWidth = "0";
   return s;
 }
+
 const fmtTime = ts => new Date(ts).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-const fmtDay = ts => { const d = new Date(ts), n = new Date(); return d.toDateString() === n.toDateString() ? "Hari ini" : d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" }); };
+
+const fmtDay = ts => {
+  const d = new Date(ts);
+  const n = new Date();
+  return d.toDateString() === n.toDateString() ? "Hari ini" : d.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+};
+
 const chatId = (a, b) => [a, b].sort().join("_");
+
 let toastT;
-function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2200); }
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
 function authMsg(code) {
   return ({
     "auth/email-already-in-use": "Nama ini sudah dipakai. Pilih nama lain.",
@@ -346,40 +1002,98 @@ function authMsg(code) {
     "auth/invalid-credential": "Nama atau password salah.",
     "auth/user-not-found": "Akun tidak ditemukan.",
     "auth/wrong-password": "Password salah.",
-    "auth/invalid-email": "Nama tidak valid (pakai huruf, angka, spasi, _ . -).",
-    "auth/operation-not-allowed": "Aktifkan Email/Password di Firebase Authentication.",
+    "auth/invalid-email": "Nama tidak valid.",
+    "auth/operation-not-allowed": "Aktifkan Email/Password di Firebase.",
     "auth/too-many-requests": "Terlalu banyak percobaan. Coba lagi nanti.",
     "auth/network-request-failed": "Koneksi internet bermasalah."
   })[code] || "Terjadi kesalahan: " + code;
 }
-async function loadUser(uid) { if (!userCache[uid]) { try { const s = await get(ref(db, "users/" + uid)); userCache[uid] = { uid, ...(s.val() || { name: "Pengguna", username: "?" }) }; } catch { userCache[uid] = { uid, name: "Pengguna", username: "?" }; } } return userCache[uid]; }
-async function loadGroup(gid, force) { if (!groupCache[gid] || force) { try { const s = await get(ref(db, "groups/" + gid)); groupCache[gid] = s.exists() ? { id: gid, ...s.val() } : null; } catch { groupCache[gid] = null; } } return groupCache[gid]; }
-function detach() { unsubs.forEach(u => { try { u(); } catch {} }); unsubs = []; if (roomUnsub) { roomUnsub(); roomUnsub = null; } current = null; dmMap = {}; grpMap = {}; presence = {}; }
 
-/* ---------- LOGIN: 3 menu ---------- */
+async function loadUser(uid) {
+  if (!userCache[uid]) {
+    try {
+      const s = await get(ref(db, "users/" + uid));
+      userCache[uid] = { uid, ...(s.val() || { name: "Pengguna", username: "?" }) };
+    } catch {
+      userCache[uid] = { uid, name: "Pengguna", username: "?" };
+    }
+  }
+  return userCache[uid];
+}
+
+async function loadGroup(gid, force) {
+  if (!groupCache[gid] || force) {
+    try {
+      const s = await get(ref(db, "groups/" + gid));
+      groupCache[gid] = s.exists() ? { id: gid, ...s.val() } : null;
+    } catch {
+      groupCache[gid] = null;
+    }
+  }
+  return groupCache[gid];
+}
+
+async function loadChan(cid, force) {
+  if (!chanCache[cid] || force) {
+    try {
+      const s = await get(ref(db, "channels/" + cid));
+      chanCache[cid] = s.exists() ? { id: cid, ...s.val() } : null;
+    } catch {
+      chanCache[cid] = null;
+    }
+  }
+  return chanCache[cid];
+}
+
+function detach() {
+  unsubs.forEach(u => { try { u(); } catch {} });
+  unsubs = [];
+  if (roomUnsub) { roomUnsub(); roomUnsub = null; }
+  current = null;
+  dmMap = {};
+  grpMap = {};
+  chanMap = {};
+  presence = {};
+}
+
+/* LOGIN */
 const MODES = {
   login:    { title: "Login akun anda", hint: "Masuk dengan nama dan password kamu.", btn: "Login" },
   register: { title: "Bikin akun", hint: "Buat akun baru dengan nama dan password.", btn: "Buat Akun" },
   owner:    { title: "Login owner", hint: "Khusus pemilik aplikasi.", btn: "Masuk sebagai Owner" }
 };
+
 function setMode(m) {
   mode = m;
   document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b.dataset.m === m));
-  $("authTitle").textContent = MODES[m].title; $("authHint").textContent = MODES[m].hint; $("aBtn").textContent = MODES[m].btn;
+  $("authTitle").textContent = MODES[m].title;
+  $("authHint").textContent = MODES[m].hint;
+  $("aBtn").textContent = MODES[m].btn;
   $("aErr").textContent = "";
   $("aSwitch").style.display = m === "login" ? "block" : "none";
   $("aPass").autocomplete = m === "register" ? "new-password" : "current-password";
 }
+
 document.querySelectorAll("#seg button").forEach(b => b.onclick = () => setMode(b.dataset.m));
 $("aGoReg").onclick = () => setMode("register");
-[$("aName"), $("aPass")].forEach(i => i.addEventListener("keydown", e => { if (e.key === "Enter") $("aBtn").click(); }));
+
+[$("aName"), $("aPass")].forEach(i => i.addEventListener("keydown", e => {
+  if (e.key === "Enter") $("aBtn").click();
+}));
 
 $("aBtn").onclick = async () => {
-  const name = $("aName").value.trim(), pass = $("aPass").value;
+  const name = $("aName").value.trim();
+  const pass = $("aPass").value;
   $("aErr").textContent = "";
-  if (mode !== "owner" && !/^[A-Za-z0-9 _.\-]{3,20}$/.test(name)) return $("aErr").textContent = "Nama 3-20 karakter (huruf, angka, spasi, _ . -).";
-  if (!name || pass.length < 6) return $("aErr").textContent = !name ? "Isi nama dulu." : "Password minimal 6 karakter.";
-  if (mode === "register" && emailOf(name) === OWNER_EMAIL) return $("aErr").textContent = "Nama ini dipakai owner. Pilih nama lain.";
+  if (mode !== "owner" && !/^[A-Za-z0-9 _.\-]{3,20}$/.test(name)) {
+    return $("aErr").textContent = "Nama 3-20 karakter (huruf, angka, spasi, _ . -).";
+  }
+  if (!name || pass.length < 6) {
+    return $("aErr").textContent = !name ? "Isi nama dulu." : "Password minimal 6 karakter.";
+  }
+  if (mode === "register" && emailOf(name) === OWNER_EMAIL) {
+    return $("aErr").textContent = "Nama ini dipakai owner. Pilih nama lain.";
+  }
   $("aBtn").disabled = true;
   try {
     if (mode === "register") {
@@ -389,104 +1103,287 @@ $("aBtn").onclick = async () => {
       ownerAttempt = mode === "owner";
       await signInWithEmailAndPassword(auth, emailOf(name), pass);
     }
-  } catch (e) { ownerAttempt = false; $("aErr").textContent = authMsg(e.code); }
+  } catch (e) {
+    ownerAttempt = false;
+    $("aErr").textContent = authMsg(e.code);
+  }
   $("aBtn").disabled = false;
 };
 
-/* ---------- AUTH STATE ---------- */
+/* AUTH STATE */
 onAuthStateChanged(auth, async user => {
-  if (!user) { me = null; detach(); show("login"); return; }
-  if (user.email === OWNER_EMAIL) { ownerAttempt = false; me = { uid: user.uid, name: "Owner", owner: true }; openOwner(); return; }
-  if (ownerAttempt) { ownerAttempt = false; await signOut(auth); setMode("owner"); $("aErr").textContent = "Ini bukan akun owner."; return; }
+  if (!user) {
+    me = null;
+    detach();
+    show("login");
+    return;
+  }
+  if (user.email === OWNER_EMAIL) {
+    ownerAttempt = false;
+    me = { uid: user.uid, name: "Owner", owner: true };
+    openOwner();
+    return;
+  }
+  if (ownerAttempt) {
+    ownerAttempt = false;
+    await signOut(auth);
+    setMode("owner");
+    $("aErr").textContent = "Ini bukan akun owner.";
+    return;
+  }
   const snap = await get(ref(db, "users/" + user.uid));
-  if (snap.exists()) { me = { uid: user.uid, ...snap.val() }; openHome(); }
-  else { me = { uid: user.uid, name: user.displayName || "" }; show("welcome"); }
+  if (snap.exists()) {
+    me = { uid: user.uid, ...snap.val() };
+    openHome();
+  } else {
+    me = { uid: user.uid, name: user.displayName || "" };
+    show("welcome");
+  }
 });
+
 $("startBtn").onclick = () => show("profile");
 
-/* ---------- PROFIL ---------- */
+/* PROFIL */
 $("photoPick").onclick = () => $("photoFile").click();
+
 $("photoFile").onchange = e => {
-  const f = e.target.files[0]; if (!f) return;
-  const img = new Image(), fr = new FileReader();
+  const f = e.target.files[0];
+  if (!f) return;
+  const img = new Image();
+  const fr = new FileReader();
   fr.onload = () => { img.src = fr.result; };
   img.onload = () => {
-    const s = 160, c = document.createElement("canvas"); c.width = c.height = s;
+    const s = 160;
+    const c = document.createElement("canvas");
+    c.width = c.height = s;
     const m = Math.min(img.width, img.height);
     c.getContext("2d").drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, s, s);
     photoData = c.toDataURL("image/jpeg", .7);
-    $("photoPick").style.backgroundImage = `url(${photoData})`; $("photoPick").textContent = "";
+    $("photoPick").style.backgroundImage = `url(${photoData})`;
+    $("photoPick").textContent = "";
   };
   fr.readAsDataURL(f);
 };
+
 $("pSave").onclick = async () => {
   const uname = $("pUser").value.trim().toLowerCase().replace(/^@/, "");
   $("pErr").textContent = "";
-  if (!/^[a-z0-9_.]{3,20}$/.test(uname)) return $("pErr").textContent = "Username 3-20 karakter: huruf kecil, angka, _ atau .";
+  if (!/^[a-z0-9_.]{3,20}$/.test(uname)) {
+    return $("pErr").textContent = "Username 3-20 karakter: huruf kecil, angka, _ atau .";
+  }
   $("pSave").disabled = true;
   try {
     const tx = await runTransaction(ref(db, "usernames/" + uname), cur => cur === null ? me.uid : undefined);
-    if (!tx.committed) $("pErr").textContent = "Username sudah dipakai.";
-    else {
+    if (!tx.committed) {
+      $("pErr").textContent = "Username sudah dipakai.";
+    } else {
       const prof = { name: me.name, username: uname, photo: photoData || "" };
       await set(ref(db, "users/" + me.uid), prof);
-      me = { uid: me.uid, ...prof }; openHome();
+      me = { uid: me.uid, ...prof };
+      openHome();
     }
-  } catch (e) { $("pErr").textContent = "Gagal menyimpan: " + e.message; }
+  } catch (e) {
+    $("pErr").textContent = "Gagal menyimpan: " + e.message;
+  }
   $("pSave").disabled = false;
 };
 
-/* ---------- PRESENCE + VERIFIED ---------- */
+/* PRESENCE + VERIFIED */
 function startPresence() {
   const pr = ref(db, "presence/" + me.uid);
   unsubs.push(onValue(ref(db, ".info/connected"), s => {
-    if (s.val() === true) onDisconnect(pr).set({ online: false, last: serverTimestamp() }).then(() => set(pr, { online: true, last: serverTimestamp() }));
+    if (s.val() === true) {
+      onDisconnect(pr).set({ online: false, last: serverTimestamp() }).then(() => set(pr, { online: true, last: serverTimestamp() }));
+    }
   }));
 }
-function watchVerified(cb) { unsubs.push(onValue(ref(db, "verified"), s => { verified = s.val() || {}; cb(); })); }
 
-/* ---------- BERANDA ---------- */
-function openHome() {
-  detach(); show("home");
-  setAvatar($("meAv"), me); $("meName").replaceChildren(nameEl(me.name, me.uid)); $("meUser").textContent = "@" + me.username;
-  startPresence();
-  watchVerified(() => { if (activeScreen() === "home") renderList(); $("meName").replaceChildren(nameEl(me.name, me.uid)); });
-  unsubs.push(onValue(ref(db, "userChats/" + me.uid), s => { dmMap = s.val() || {}; renderList(); }));
-  unsubs.push(onValue(ref(db, "userGroups/" + me.uid), s => { grpMap = s.val() || {}; renderList(); }));
+function watchVerified(cb) {
+  unsubs.push(onValue(ref(db, "verified"), s => {
+    verified = s.val() || {};
+    cb();
+  }));
 }
+
+/* BERANDA */
+function openHome() {
+  detach();
+  show("home");
+  setAvatar($("meAv"), me);
+  $("meName").replaceChildren(nameEl(me.name, me.uid));
+  $("meUser").textContent = "@" + me.username;
+  startPresence();
+  watchVerified(() => {
+    if (activeScreen() === "home") renderList();
+    $("meName").replaceChildren(nameEl(me.name, me.uid));
+  });
+  unsubs.push(onValue(ref(db, "userChats/" + me.uid), s => {
+    dmMap = s.val() || {};
+    renderList();
+  }));
+  unsubs.push(onValue(ref(db, "userGroups/" + me.uid), s => {
+    grpMap = s.val() || {};
+    renderList();
+  }));
+  unsubs.push(onValue(ref(db, "userChannels/" + me.uid), s => {
+    chanMap = s.val() || {};
+    renderList();
+  }));
+  unsubs.push(onValue(ref(db, "statuses"), s => {
+    statusMap = s.val() || {};
+    renderStatus();
+  }));
+  unsubs.push(onValue(ref(db, "channels"), s => {
+    const all = s.val() || {};
+    Object.entries(all).forEach(([id, v]) => chanCache[id] = { id, ...v });
+    if (homeTab === "chan") renderList();
+  }));
+}
+
 $("searchIn").oninput = () => renderList();
+
+$("tabChat").onclick = () => {
+  homeTab = "chat";
+  $("tabChat").classList.add("on");
+  $("tabChan").classList.remove("on");
+  renderList();
+};
+
+$("tabChan").onclick = () => {
+  homeTab = "chan";
+  $("tabChan").classList.add("on");
+  $("tabChat").classList.remove("on");
+  renderList();
+};
+
 async function renderList() {
-  const token = ++renderTok, q = $("searchIn").value.trim().toLowerCase(), items = [];
-  for (const [pid, c] of Object.entries(dmMap)) { const u = await loadUser(pid); items.push({ type: "dm", id: pid, u, c, name: u.name, key: u.name + " " + u.username }); }
-  for (const [gid, c] of Object.entries(grpMap)) { const g = await loadGroup(gid); if (g) items.push({ type: "group", id: gid, g, c, name: g.name, key: g.name }); }
+  const token = ++renderTok;
+  const q = $("searchIn").value.trim().toLowerCase();
+  const items = [];
+  if (homeTab === "chat") {
+    for (const [pid, c] of Object.entries(dmMap)) {
+      const u = await loadUser(pid);
+      items.push({ type: "dm", id: pid, u, c, name: u.name, key: u.name + " " + u.username });
+    }
+    for (const [gid, c] of Object.entries(grpMap)) {
+      const g = await loadGroup(gid);
+      if (g) items.push({ type: "group", id: gid, g, c, name: g.name, key: g.name });
+    }
+  } else {
+    for (const [cid, c] of Object.entries(chanMap)) {
+      const ch = await loadChan(cid);
+      if (ch) items.push({ type: "chan", id: cid, ch, c, name: ch.name, key: ch.name + " " + (ch.desc || "") });
+    }
+  }
   if (token !== renderTok) return;
-  const box = $("chatList"); box.innerHTML = "";
-  const rows = items.filter(i => !q || i.key.toLowerCase().includes(q)).sort((a, b) => (b.c.ts || 0) - (a.c.ts || 0));
-  if (!rows.length) { box.innerHTML = `<div class="empty"><div class="big">💬</div>${q ? "Tidak ditemukan." : "Belum ada chat.<br>Tekan tombol <b>+</b> untuk tambah kontak atau buat grup."}</div>`; return; }
+  const box = $("chatList");
+  box.innerHTML = "";
+  const rows = items
+    .filter(i => !q || i.key.toLowerCase().includes(q))
+    .sort((a, b) => (b.c.ts || 0) - (a.c.ts || 0));
+  if (!rows.length) {
+    box.innerHTML = `<div class="empty"><div class="big">${homeTab === "chan" ? "📢" : "💬"}</div>${q ? "Tidak ditemukan." : homeTab === "chan" ? "Belum ikut saluran.<br>Tekan + > Buat saluran." : "Belum ada chat.<br>Tekan tombol <b>+</b> untuk tambah kontak atau buat grup."}</div>`;
+    if (homeTab === "chan") {
+      const btnWrap = document.createElement("div");
+      btnWrap.style.padding = "0 16px";
+      btnWrap.innerHTML = `<button class="btn ghost" id="browseChan">🔍 Lihat Semua Saluran</button>`;
+      box.appendChild(btnWrap);
+      $("browseChan").onclick = showAllChannels;
+    }
+    return;
+  }
   rows.forEach(i => {
-    const el = document.createElement("div"); el.className = "item";
+    const el = document.createElement("div");
+    el.className = "item";
     el.innerHTML = '<div class="avatar"></div><div class="info"><div class="top"><div class="nm"></div><div class="tm"></div></div><div class="last"></div></div>';
     const nm = el.querySelector(".nm");
-    if (i.type === "dm") { setAvatar(el.querySelector(".avatar"), i.u); nm.appendChild(nameEl(i.u.name + " (@" + i.u.username + ")", i.id)); el.onclick = () => openRoom({ type: "dm", user: i.u }); }
-    else { setAvatar(el.querySelector(".avatar"), null, i.g.name); const tg = document.createElement("span"); tg.className = "gtag"; tg.textContent = "GRUP"; nm.appendChild(tg); nm.appendChild(nameEl(i.g.name)); el.onclick = () => openRoom({ type: "group", group: i.g }); }
+    if (i.type === "dm") {
+      setAvatar(el.querySelector(".avatar"), i.u);
+      nm.appendChild(nameEl(i.u.name + " (@" + i.u.username + ")", i.id));
+      el.onclick = () => openRoom({ type: "dm", user: i.u });
+    } else if (i.type === "group") {
+      setAvatar(el.querySelector(".avatar"), null, i.g.name);
+      const tg = document.createElement("span");
+      tg.className = "gtag";
+      tg.textContent = "GRUP";
+      nm.appendChild(tg);
+      nm.appendChild(nameEl(i.g.name));
+      el.onclick = () => openRoom({ type: "group", group: i.g });
+    } else {
+      setAvatar(el.querySelector(".avatar"), null, i.ch.name);
+      const tg = document.createElement("span");
+      tg.className = "gtag";
+      tg.textContent = "SALURAN";
+      tg.style.background = "#fef3c7";
+      tg.style.color = "#92400e";
+      nm.appendChild(tg);
+      nm.appendChild(nameEl(i.ch.name));
+      el.querySelector(".last").textContent = i.c.last || i.ch.desc || "";
+      el.onclick = () => openRoom({ type: "chan", chan: i.ch });
+    }
     el.querySelector(".tm").textContent = i.c.ts ? fmtTime(i.c.ts) : "";
-    el.querySelector(".last").textContent = i.c.last || "";
+    if (i.type !== "chan") el.querySelector(".last").textContent = i.c.last || "";
     box.appendChild(el);
   });
 }
+
+async function showAllChannels() {
+  const s = await get(ref(db, "channels"));
+  const all = s.val() || {};
+  const box = $("chatList");
+  box.innerHTML = '<div style="padding:14px"><h3 style="margin-bottom:10px">Semua Saluran</h3></div>';
+  Object.entries(all).forEach(([cid, ch]) => {
+    const el = document.createElement("div");
+    el.className = "item";
+    el.innerHTML = `<div class="avatar" style="background:#f59e0b">📢</div><div class="info"><div class="nm"><b>${ch.name}</b></div><div class="last">${ch.desc || ""} • ${Object.keys(ch.members || {}).length} pengikut</div></div><button class="vbtn">${chanMap[cid] ? "Masuk" : "Ikuti"}</button>`;
+    el.querySelector("button").onclick = async (e) => {
+      e.stopPropagation();
+      await set(ref(db, "channels/" + cid + "/members/" + me.uid), true);
+      await set(ref(db, "userChannels/" + me.uid + "/" + cid), { last: "Kamu mengikuti saluran", ts: Date.now() });
+      toast("Mengikuti " + ch.name);
+      renderList();
+    };
+    el.onclick = () => {
+      if (chanMap[cid]) openRoom({ type: "chan", chan: { id: cid, ...ch } });
+      else toast("Ikuti dulu untuk baca");
+    };
+    box.appendChild(el);
+  });
+  if (!Object.keys(all).length) {
+    box.innerHTML = '<div class="empty">Belum ada saluran.<br>Buat saluran pertama!</div>';
+  }
+}
+
 $("logoutBtn").onclick = doLogout;
+
 async function doLogout() {
-  try { if (me && !me.owner) await set(ref(db, "presence/" + me.uid), { online: false, last: Date.now() }); } catch {}
+  try {
+    if (me && !me.owner) await set(ref(db, "presence/" + me.uid), { online: false, last: Date.now() });
+  } catch {}
   await signOut(auth);
 }
 
-/* ---------- FAB ---------- */
-$("fab").onclick = () => { $("fab").classList.toggle("open"); $("fabMenu").classList.toggle("show"); };
-const closeFab = () => { $("fab").classList.remove("open"); $("fabMenu").classList.remove("show"); };
+/* FAB */
+$("fab").onclick = () => {
+  $("fab").classList.toggle("open");
+  $("fabMenu").classList.toggle("show");
+};
 
-/* ---------- TAMBAH KONTAK ---------- */
-$("addBtn").onclick = () => { closeFab(); $("cUser").value = ""; $("cErr").textContent = ""; $("modal").classList.add("show"); };
+const closeFab = () => {
+  $("fab").classList.remove("open");
+  $("fabMenu").classList.remove("show");
+};
+
+/* TAMBAH KONTAK */
+$("addBtn").onclick = () => {
+  closeFab();
+  $("cUser").value = "";
+  $("cErr").textContent = "";
+  $("modal").classList.add("show");
+};
+
 $("cCancel").onclick = () => $("modal").classList.remove("show");
+
 async function findByUsername(raw) {
   const uname = raw.trim().toLowerCase().replace(/^@/, "");
   if (!uname) return { error: "Isi username dulu." };
@@ -495,216 +1392,606 @@ async function findByUsername(raw) {
   if (!s.exists()) return { error: "Username tidak ditemukan." };
   return { user: await loadUser(s.val()) };
 }
+
 $("cGo").onclick = async () => {
   $("cErr").textContent = "";
   const r = await findByUsername($("cUser").value);
   if (r.error) return $("cErr").textContent = r.error;
-  $("modal").classList.remove("show"); openRoom({ type: "dm", user: r.user });
+  $("modal").classList.remove("show");
+  openRoom({ type: "dm", user: r.user });
 };
 
-/* ---------- BUAT GRUP ---------- */
+/* BUAT GRUP */
 let gPick = {};
+
 $("grpBtn").onclick = async () => {
-  closeFab(); $("gName").value = ""; $("gUser").value = ""; $("gErr").textContent = ""; gPick = {};
-  for (const pid of Object.keys(dmMap)) { await loadUser(pid); gPick[pid] = false; }
-  renderGContacts(); $("gmodal").classList.add("show");
+  closeFab();
+  $("gName").value = "";
+  $("gUser").value = "";
+  $("gErr").textContent = "";
+  gPick = {};
+  for (const pid of Object.keys(dmMap)) {
+    await loadUser(pid);
+    gPick[pid] = false;
+  }
+  renderGContacts();
+  $("gmodal").classList.add("show");
 };
+
 function renderGContacts() {
-  const box = $("gContacts"); box.innerHTML = "";
+  const box = $("gContacts");
+  box.innerHTML = "";
   const ids = Object.keys(gPick);
-  if (!ids.length) { box.innerHTML = '<div class="empty" style="padding:18px">Belum ada kontak. Tambah anggota lewat username di bawah.</div>'; return; }
+  if (!ids.length) {
+    box.innerHTML = '<div class="empty" style="padding:18px">Belum ada kontak. Tambah anggota lewat username di bawah.</div>';
+    return;
+  }
   ids.forEach(uid => {
-    const u = userCache[uid], l = document.createElement("label"); l.className = "chk";
+    const u = userCache[uid];
+    const l = document.createElement("label");
+    l.className = "chk";
     l.innerHTML = '<input type="checkbox"><div class="avatar"></div><div></div>';
-    const cb = l.querySelector("input"); cb.checked = gPick[uid]; cb.onchange = () => gPick[uid] = cb.checked;
-    setAvatar(l.querySelector(".avatar"), u); l.lastChild.appendChild(nameEl(u.name + " (@" + u.username + ")", uid));
+    const cb = l.querySelector("input");
+    cb.checked = gPick[uid];
+    cb.onchange = () => gPick[uid] = cb.checked;
+    setAvatar(l.querySelector(".avatar"), u);
+    l.lastChild.appendChild(nameEl(u.name + " (@" + u.username + ")", uid));
     box.appendChild(l);
   });
 }
+
 $("gAdd").onclick = async () => {
   $("gErr").textContent = "";
   const r = await findByUsername($("gUser").value);
   if (r.error) return $("gErr").textContent = r.error;
-  gPick[r.user.uid] = true; $("gUser").value = ""; renderGContacts();
+  gPick[r.user.uid] = true;
+  $("gUser").value = "";
+  renderGContacts();
 };
+
 $("gCancel").onclick = () => $("gmodal").classList.remove("show");
+
 $("gCreate").onclick = async () => {
-  const name = $("gName").value.trim(); $("gErr").textContent = "";
+  const name = $("gName").value.trim();
+  $("gErr").textContent = "";
   if (!name) return $("gErr").textContent = "Isi nama grup.";
   const picked = Object.keys(gPick).filter(k => gPick[k]);
   if (!picked.length) return $("gErr").textContent = "Pilih minimal 1 anggota.";
   $("gCreate").disabled = true;
   try {
-    const gref = push(ref(db, "groups")), gid = gref.key, ts = Date.now();
-    const members = { [me.uid]: true }; picked.forEach(u => members[u] = true);
+    const gref = push(ref(db, "groups"));
+    const gid = gref.key;
+    const ts = Date.now();
+    const members = { [me.uid]: true };
+    picked.forEach(u => members[u] = true);
     await set(gref, { name, creator: me.uid, ts, members });
-    const upd = {}; Object.keys(members).forEach(u => upd["userGroups/" + u + "/" + gid] = { last: me.name + " membuat grup", ts });
+    const upd = {};
+    Object.keys(members).forEach(u => upd["userGroups/" + u + "/" + gid] = { last: me.name + " membuat grup", ts });
     await update(ref(db), upd);
     groupCache[gid] = { id: gid, name, creator: me.uid, ts, members };
-    $("gmodal").classList.remove("show"); openRoom({ type: "group", group: groupCache[gid] });
-  } catch (e) { $("gErr").textContent = "Gagal membuat grup: " + e.message; }
+    $("gmodal").classList.remove("show");
+    openRoom({ type: "group", group: groupCache[gid] });
+  } catch (e) {
+    $("gErr").textContent = "Gagal membuat grup: " + e.message;
+  }
   $("gCreate").disabled = false;
 };
 
-/* ---------- ROOM CHAT (DM & GRUP) ---------- */
-function openRoom(target) {
-  current = target; show("room");
-  const box = $("msgs"); box.innerHTML = ""; lastDay = "";
-  if (roomUnsub) roomUnsub();
-  let path;
-  if (target.type === "dm") {
-    const u = target.user; setAvatar($("rAv"), u);
-    $("rName").replaceChildren(nameEl(u.name, u.uid)); $("rSub").textContent = "@" + u.username;
-    path = "chats/" + chatId(me.uid, u.uid) + "/messages";
-  } else {
-    const g = target.group; setAvatar($("rAv"), null, g.name);
-    $("rName").replaceChildren(nameEl(g.name)); $("rSub").textContent = Object.keys(g.members || {}).length + " anggota • ketuk untuk info";
-    path = "groupMsgs/" + g.id;
-  }
-  roomUnsub = onChildAdded(query(ref(db, path), limitToLast(200)), s => addMsg(s.val(), target.type === "group"));
-}
-function addMsg(m, isGroup) {
-  const box = $("msgs");
-  const day = new Date(m.ts).toDateString();
-  if (day !== lastDay) { lastDay = day; const c = document.createElement("div"); c.className = "day"; c.textContent = fmtDay(m.ts); box.appendChild(c); }
-  const mine = m.from === me.uid;
-  const d = document.createElement("div"); d.className = "m" + (mine ? " me" : "");
-  if (isGroup && !mine) { const w = nameEl(m.name || "Anggota", m.from, "who"); w.style.color = colorOf(m.from); d.appendChild(w); }
-  if (m.photo) {
-    const img = document.createElement("img"); img.className = "chat-img"; img.src = m.photo; img.onclick = () => window.open(m.photo, "_blank"); d.appendChild(img);
-  }
-  if (m.text) { const tx = document.createElement("span"); tx.textContent = m.text; d.appendChild(tx); }
-  const t = document.createElement("span"); t.className = "t"; t.textContent = fmtTime(m.ts); d.appendChild(t);
-  box.appendChild(d); box.scrollTop = box.scrollHeight;
-}
-$("backBtn").onclick = () => { if (roomUnsub) { roomUnsub(); roomUnsub = null; } current = null; show("home"); };
-$("form").onsubmit = async e => {
-  e.preventDefault();
-  const text = $("msgIn").value.trim(); if (!text || !current) return;
-  $("msgIn").value = ""; const ts = Date.now();
-  try {
-    if (current.type === "dm") {
-      const peer = current.user;
-      await push(ref(db, "chats/" + chatId(me.uid, peer.uid) + "/messages"), { from: me.uid, text, ts });
-      await update(ref(db), {
-        ["userChats/" + me.uid + "/" + peer.uid]: { last: text, ts },
-        ["userChats/" + peer.uid + "/" + me.uid]: { last: text, ts }
-      });
-    } else {
-      const g = current.group;
-      await push(ref(db, "groupMsgs/" + g.id), { from: me.uid, name: me.name, text, ts });
-      const upd = {}; Object.keys(g.members || {}).forEach(u => upd["userGroups/" + u + "/" + g.id] = { last: me.name + ": " + text, ts });
-      await update(ref(db), upd);
-    }
-  } catch (err) { toast("Pesan gagal terkirim"); }
+/* SALURAN */
+$("chanBtn").onclick = () => {
+  closeFab();
+  $("chanName").value = "";
+  $("chanDesc").value = "";
+  $("chanErr").textContent = "";
+  $("chanModal").classList.add("show");
 };
 
-/* ---------- KIRIM FOTO DI CHAT ---------- */
-$("photoBtn").onclick = () => $("chatPhoto").click();
-$("chatPhoto").onchange = async e => {
-  const f = e.target.files[0]; $("chatPhoto").value = ""; if (!f || !current) return;
-  toast("Mengirim foto...");
-  const img = new Image(), fr = new FileReader();
-  fr.onload = () => { img.src = fr.result; };
-  img.onload = async () => {
-    const maxW = 800; let w = img.width, h = img.height;
-    if (w > maxW) { h = h * maxW / w; w = maxW; }
-    const c = document.createElement("canvas"); c.width = w; c.height = h;
-    c.getContext("2d").drawImage(img, 0, 0, w, h);
-    const photo = c.toDataURL("image/jpeg", .75);
+$("chanCancel").onclick = () => $("chanModal").classList.remove("show");
+
+$("chanCreate").onclick = async () => {
+  const name = $("chanName").value.trim();
+  const desc = $("chanDesc").value.trim();
+  if (!name) return $("chanErr").textContent = "Isi nama saluran.";
+  try {
+    const cref = push(ref(db, "channels"));
+    const cid = cref.key;
     const ts = Date.now();
-    try {
-      if (current.type === "dm") {
-        const peer = current.user;
-        await push(ref(db, "chats/" + chatId(me.uid, peer.uid) + "/messages"), { from: me.uid, text: "", photo, ts });
-        await update(ref(db), {
-          ["userChats/" + me.uid + "/" + peer.uid]: { last: "📷 Foto", ts },
-          ["userChats/" + peer.uid + "/" + me.uid]: { last: "📷 Foto", ts }
-        });
+    await set(cref, { name, desc, creator: me.uid, ts, members: { [me.uid]: true } });
+    await set(ref(db, "userChannels/" + me.uid + "/" + cid), { last: "Kamu membuat saluran", ts });
+    chanCache[cid] = { id: cid, name, desc, creator: me.uid, ts, members: { [me.uid]: true } };
+    $("chanModal").classList.remove("show");
+    homeTab = "chan";
+    $("tabChan").click();
+    toast("Saluran dibuat!");
+  } catch (e) {
+    $("chanErr").textContent = e.message;
+  }
+};
+
+/* STATUS */
+function renderStatus() {
+  const row = $("statusRow");
+  row.innerHTML = "";
+  const mine = document.createElement("div");
+  mine.className = "sitem mine";
+  mine.innerHTML = `<div class="avatar">+</div><span>Status Saya</span>`;
+  mine.onclick = () => {
+    closeFab();
+    $("statusText").value = "";
+    $("statusErr").textContent = "";
+    $("statusModal").classList.add("show");
+  };
+  row.appendChild(mine);
+  const now = Date.now();
+  Object.entries(statusMap).forEach(([uid, st]) => {
+    if (now - st.ts > 24 * 60 * 60 * 1000) return;
+    if (uid === me.uid) return;
+    const d = document.createElement("div");
+    d.className = "sitem";
+    d.innerHTML = `<div class="avatar"></div><span></span>`;
+    loadUser(uid).then(u => {
+      setAvatar(d.querySelector(".avatar"), u);
+      d.querySelector("span").textContent = u.name;
+    });
+    d.onclick = () => {
+      if (st.photo) {
+        $("statusViewImg").src = st.photo;
+        $("statusViewImg").style.display = "block";
       } else {
-        const g = current.group;
-        await push(ref(db, "groupMsgs/" + g.id), { from: me.uid, name: me.name, text: "", photo, ts });
-        const upd = {}; Object.keys(g.members || {}).forEach(u => upd["userGroups/" + u + "/" + g.id] = { last: me.name + ": 📷 Foto", ts });
-        await update(ref(db), upd);
+        $("statusViewImg").style.display = "none";
       }
-    } catch (err) { toast("Foto gagal terkirim, foto terlalu besar"); }
+      loadUser(uid).then(u => $("statusViewName").textContent = u.name + " • Status");
+      $("statusViewText").textContent = st.text || "";
+      $("statusViewTime").textContent = new Date(st.ts).toLocaleString("id-ID");
+      $("statusView").classList.add("show");
+    };
+    row.appendChild(d);
+  });
+  const mySt = statusMap[me.uid];
+  if (mySt && now - mySt.ts < 24 * 60 * 60 * 1000) {
+    const d = document.createElement("div");
+    d.className = "sitem";
+    d.innerHTML = `<div class="avatar"></div><span>Saya</span>`;
+    setAvatar(d.querySelector(".avatar"), me);
+    d.onclick = () => {
+      if (mySt.photo) {
+        $("statusViewImg").src = mySt.photo;
+        $("statusViewImg").style.display = "block";
+      } else {
+        $("statusViewImg").style.display = "none";
+      }
+      $("statusViewName").textContent = "Status Saya";
+      $("statusViewText").textContent = mySt.text || "";
+      $("statusViewTime").textContent = new Date(mySt.ts).toLocaleString("id-ID");
+      $("statusView").classList.add("show");
+    };
+    row.appendChild(d);
+  }
+}
+
+$("statusBtn").onclick = () => {
+  closeFab();
+  $("statusText").value = "";
+  $("statusModal").classList.add("show");
+};
+
+$("statusCancel").onclick = () => $("statusModal").classList.remove("show");
+$("statusPhotoBtn").onclick = () => $("statusPhoto").click();
+
+$("statusPhoto").onchange = e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const img = new Image();
+  const fr = new FileReader();
+  fr.onload = () => img.src = fr.result;
+  img.onload = () => {
+    const c = document.createElement("canvas");
+    let w = img.width;
+    let h = img.height;
+    if (w > 800) { h = h * 800 / w; w = 800; }
+    c.width = w;
+    c.height = h;
+    c.getContext("2d").drawImage(img, 0, 0, w, h);
+    statusPhotoData = c.toDataURL("image/jpeg", .75);
+    toast("Foto status ditambahkan");
   };
   fr.readAsDataURL(f);
 };
 
-/* ---------- INFO GRUP ---------- */
-$("rHead").onclick = () => { if (current && current.type === "group") openInfo(); };
+$("statusPost").onclick = async () => {
+  const text = $("statusText").value.trim();
+  if (!text && !statusPhotoData) return $("statusErr").textContent = "Isi teks atau foto dulu.";
+  try {
+    await set(ref(db, "statuses/" + me.uid), { text, photo: statusPhotoData || "", ts: Date.now(), name: me.name });
+    statusPhotoData = "";
+    $("statusModal").classList.remove("show");
+    toast("Status diposting!");
+  } catch (e) {
+    $("statusErr").textContent = e.message;
+  }
+};
+
+$("statusViewClose").onclick = () => $("statusView").classList.remove("show");
+
+/* ROOM CHAT */
+function openRoom(target) {
+  current = target;
+  show("room");
+  const box = $("msgs");
+  box.innerHTML = "";
+  lastDay = "";
+  if (roomUnsub) roomUnsub();
+  let path;
+  let canSend = true;
+  if (target.type === "dm") {
+    const u = target.user;
+    setAvatar($("rAv"), u);
+    $("rName").replaceChildren(nameEl(u.name, u.uid));
+    $("rSub").textContent = "@" + u.username;
+    path = "chats/" + chatId(me.uid, u.uid) + "/messages";
+  } else if (target.type === "group") {
+    const g = target.group;
+    setAvatar($("rAv"), null, g.name);
+    $("rName").replaceChildren(nameEl(g.name));
+    $("rSub").textContent = Object.keys(g.members || {}).length + " anggota • ketuk untuk info";
+    path = "groupMsgs/" + g.id;
+  } else {
+    const ch = target.chan;
+    setAvatar($("rAv"), null, ch.name);
+    $("rName").replaceChildren(nameEl("📢 " + ch.name));
+    $("rSub").textContent = (ch.desc || "") + ` • ${Object.keys(ch.members || {}).length} pengikut` + (ch.creator === me.uid ? " • Kamu admin" : " • Hanya admin bisa kirim");
+    path = "chanMsgs/" + ch.id;
+    canSend = ch.creator === me.uid;
+    $("msgIn").disabled = !canSend;
+    $("msgIn").placeholder = canSend ? "Ketik pesan saluran" : "Hanya admin bisa kirim di saluran";
+  }
+  if (target.type !== "chan") {
+    $("msgIn").disabled = false;
+    $("msgIn").placeholder = "Ketik pesan";
+  }
+  roomUnsub = onChildAdded(query(ref(db, path), limitToLast(200)), s => addMsg(s.val(), target.type === "group" || target.type === "chan"));
+}
+
+function addMsg(m, isGroup) {
+  const box = $("msgs");
+  const day = new Date(m.ts).toDateString();
+  if (day !== lastDay) {
+    lastDay = day;
+    const c = document.createElement("div");
+    c.className = "day";
+    c.textContent = fmtDay(m.ts);
+    box.appendChild(c);
+  }
+  const mine = m.from === me.uid;
+  const d = document.createElement("div");
+  d.className = "m" + (mine ? " me" : "");
+  if (isGroup && !mine) {
+    const w = nameEl(m.name || "Anggota", m.from, "who");
+    w.style.color = colorOf(m.from);
+    d.appendChild(w);
+  }
+  if (m.photo) {
+    const img = document.createElement("img");
+    img.className = "chat-img";
+    img.src = m.photo;
+    img.onclick = () => {
+      // FIX BLANK: pake viewer di dalam app, bukan window.open
+      $("photoViewImg").src = m.photo;
+      $("photoView").classList.add("show");
+    };
+    d.appendChild(img);
+  }
+  if (m.sticker) {
+    const s = document.createElement("span");
+    s.className = "sticker";
+    s.textContent = m.sticker;
+    d.appendChild(s);
+  }
+  if (m.vn) {
+    const a = document.createElement("audio");
+    a.controls = true;
+    a.src = m.vn;
+    d.appendChild(a);
+  }
+  if (m.text) {
+    const tx = document.createElement("span");
+    tx.textContent = m.text;
+    d.appendChild(tx);
+  }
+  const t = document.createElement("span");
+  t.className = "t";
+  t.textContent = fmtTime(m.ts);
+  d.appendChild(t);
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+
+$("photoViewClose").onclick = () => {
+  $("photoView").classList.remove("show");
+  $("photoViewImg").src = "";
+};
+
+$("photoView").onclick = e => {
+  if (e.target.id === "photoView") {
+    $("photoView").classList.remove("show");
+    $("photoViewImg").src = "";
+  }
+};
+
+$("backBtn").onclick = () => {
+  if (roomUnsub) { roomUnsub(); roomUnsub = null; }
+  current = null;
+  show("home");
+};
+
+async function sendMessage(payload, lastText) {
+  const ts = Date.now();
+  const msg = {
+    from: me.uid,
+    name: me.name,
+    text: payload.text || "",
+    photo: payload.photo || "",
+    sticker: payload.sticker || "",
+    vn: payload.vn || "",
+    ts
+  };
+  try {
+    if (current.type === "dm") {
+      const peer = current.user;
+      await push(ref(db, "chats/" + chatId(me.uid, peer.uid) + "/messages"), msg);
+      await update(ref(db), {
+        ["userChats/" + me.uid + "/" + peer.uid]: { last: lastText, ts },
+        ["userChats/" + peer.uid + "/" + me.uid]: { last: lastText, ts }
+      });
+    } else if (current.type === "group") {
+      const g = current.group;
+      await push(ref(db, "groupMsgs/" + g.id), msg);
+      const upd = {};
+      Object.keys(g.members || {}).forEach(u => upd["userGroups/" + u + "/" + g.id] = { last: me.name + ": " + lastText, ts });
+      await update(ref(db), upd);
+    } else {
+      const ch = current.chan;
+      if (ch.creator !== me.uid) return toast("Hanya admin bisa kirim di saluran");
+      await push(ref(db, "chanMsgs/" + ch.id), msg);
+      const upd = {};
+      Object.keys(ch.members || {}).forEach(u => upd["userChannels/" + u + "/" + ch.id] = { last: lastText, ts });
+      await update(ref(db), upd);
+    }
+  } catch (err) {
+    toast("Pesan gagal terkirim");
+  }
+}
+
+$("form").onsubmit = async e => {
+  e.preventDefault();
+  const text = $("msgIn").value.trim();
+  if (!text || !current) return;
+  $("msgIn").value = "";
+  await sendMessage({ text }, text);
+};
+
+/* KIRIM FOTO */
+$("photoBtn").onclick = () => $("chatPhoto").click();
+
+$("chatPhoto").onchange = async e => {
+  const f = e.target.files[0];
+  $("chatPhoto").value = "";
+  if (!f || !current) return;
+  toast("Mengirim foto...");
+  const img = new Image();
+  const fr = new FileReader();
+  fr.onload = () => { img.src = fr.result; };
+  img.onload = async () => {
+    const maxW = 800;
+    let w = img.width;
+    let h = img.height;
+    if (w > maxW) { h = h * maxW / w; w = maxW; }
+    const c = document.createElement("canvas");
+    c.width = w;
+    c.height = h;
+    c.getContext("2d").drawImage(img, 0, 0, w, h);
+    const photo = c.toDataURL("image/jpeg", .75);
+    await sendMessage({ photo }, "📷 Foto");
+  };
+  fr.readAsDataURL(f);
+};
+
+/* STIKER */
+const STICKERS = ["😂","😍","😭","😡","🔥","❤️","👍","🙏","😎","🥳","😴","🤣","😇","💀","✨","🎉","🐶","🐱","🍕","⚽","💪","😜","🤔","😱","👻","🦄"];
+
+$("stickerBtn").onclick = () => {
+  const g = $("stickGrid");
+  g.innerHTML = "";
+  STICKERS.forEach(s => {
+    const b = document.createElement("button");
+    b.textContent = s;
+    b.onclick = async () => {
+      $("stickerModal").classList.remove("show");
+      if (!current) return;
+      await sendMessage({ sticker: s }, "😀 Stiker");
+    };
+    g.appendChild(b);
+  });
+  $("stickerModal").classList.add("show");
+};
+
+$("stickClose").onclick = () => $("stickerModal").classList.remove("show");
+
+/* VN - VOICE NOTE */
+let mediaRec = null;
+let chunks = [];
+let isRec = false;
+
+$("vnBtn").onclick = async () => {
+  if (isRec) {
+    stopVN();
+    return;
+  }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRec = new MediaRecorder(stream);
+    chunks = [];
+    mediaRec.ondataavailable = e => {
+      if (e.data.size > 0) chunks.push(e.data);
+    };
+    mediaRec.onstop = async () => {
+      stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(chunks, { type: "audio/webm" });
+      const fr = new FileReader();
+      fr.onload = async () => {
+        await sendMessage({ vn: fr.result }, "🎤 Voice Note");
+      };
+      fr.readAsDataURL(blob);
+    };
+    mediaRec.start();
+    isRec = true;
+    $("vnBtn").classList.add("rec");
+    $("vnBtn").textContent = "⏹️";
+    toast("Merekam VN... Klik lagi untuk kirim");
+  } catch {
+    toast("Izin mic ditolak. Izinkan mic di browser.");
+  }
+};
+
+function stopVN() {
+  if (mediaRec && isRec) {
+    mediaRec.stop();
+    isRec = false;
+    $("vnBtn").classList.remove("rec");
+    $("vnBtn").textContent = "🎤";
+    toast("VN terkirim!");
+  }
+}
+
+/* INFO GRUP */
+$("rHead").onclick = () => {
+  if (current && current.type === "group") openInfo();
+};
+
 async function openInfo() {
-  const g = await loadGroup(current.group.id, true); if (!g) return;
+  const g = await loadGroup(current.group.id, true);
+  if (!g) return;
   current.group = g;
-  $("iTitle").textContent = g.name; $("iErr").textContent = "";
+  $("iTitle").textContent = g.name;
+  $("iErr").textContent = "";
   const ids = Object.keys(g.members || {});
   $("iHint").textContent = ids.length + " anggota";
-  const box = $("iMembers"); box.innerHTML = "";
+  const box = $("iMembers");
+  box.innerHTML = "";
   for (const uid of ids) {
-    const u = await loadUser(uid), r = document.createElement("div"); r.className = "mem";
+    const u = await loadUser(uid);
+    const r = document.createElement("div");
+    r.className = "mem";
     r.innerHTML = '<div class="avatar"></div><div style="flex:1;min-width:0"><div class="nmx"></div><small></small></div>';
-    setAvatar(r.querySelector(".avatar"), u); r.querySelector(".nmx").appendChild(nameEl(u.name + (uid === me.uid ? " (Kamu)" : ""), uid));
+    setAvatar(r.querySelector(".avatar"), u);
+    r.querySelector(".nmx").appendChild(nameEl(u.name + (uid === me.uid ? " (Kamu)" : ""), uid));
     r.querySelector("small").textContent = "@" + u.username + (uid === g.creator ? " • Pembuat grup" : "");
     box.appendChild(r);
   }
   $("iAddWrap").style.display = g.creator === me.uid ? "block" : "none";
   $("imodal").classList.add("show");
 }
+
 $("iClose").onclick = () => $("imodal").classList.remove("show");
+
 $("iAdd").onclick = async () => {
   $("iErr").textContent = "";
-  const r = await findByUsername($("iUser").value); if (r.error) return $("iErr").textContent = r.error;
+  const r = await findByUsername($("iUser").value);
+  if (r.error) return $("iErr").textContent = r.error;
   const g = current.group;
   if (g.members && g.members[r.user.uid]) return $("iErr").textContent = "Sudah jadi anggota.";
   try {
     await set(ref(db, "groups/" + g.id + "/members/" + r.user.uid), true);
     await set(ref(db, "userGroups/" + r.user.uid + "/" + g.id), { last: me.name + " menambahkan kamu", ts: Date.now() });
-    $("iUser").value = ""; toast(r.user.name + " ditambahkan"); await openInfo();
+    $("iUser").value = "";
+    toast(r.user.name + " ditambahkan");
+    await openInfo();
     $("rSub").textContent = Object.keys(current.group.members).length + " anggota • ketuk untuk info";
-  } catch (e) { $("iErr").textContent = "Gagal menambah: " + e.message; }
+  } catch (e) {
+    $("iErr").textContent = "Gagal menambah: " + e.message;
+  }
 };
+
 $("iLeave").onclick = async () => {
   if (!confirm("Keluar dari grup ini?")) return;
   const g = current.group;
   try {
     await set(ref(db, "groups/" + g.id + "/members/" + me.uid), null);
     await set(ref(db, "userGroups/" + me.uid + "/" + g.id), null);
-    delete groupCache[g.id]; $("imodal").classList.remove("show");
-    if (roomUnsub) { roomUnsub(); roomUnsub = null; } current = null; show("home"); toast("Kamu keluar dari grup");
-  } catch (e) { $("iErr").textContent = "Gagal keluar: " + e.message; }
+    delete groupCache[g.id];
+    $("imodal").classList.remove("show");
+    if (roomUnsub) { roomUnsub(); roomUnsub = null; }
+    current = null;
+    show("home");
+    toast("Kamu keluar dari grup");
+  } catch (e) {
+    $("iErr").textContent = "Gagal keluar: " + e.message;
+  }
 };
 
-/* ---------- PANEL OWNER ---------- */
+/* PANEL OWNER */
 function openOwner() {
-  detach(); show("owner");
+  detach();
+  show("owner");
   watchVerified(renderOwner);
-  unsubs.push(onValue(ref(db, "users"), s => { allUsers = s.val() || {}; renderOwner(); }, () => toast("Tidak bisa membaca data. Cek Rules.")));
-  unsubs.push(onValue(ref(db, "presence"), s => { presence = s.val() || {}; renderOwner(); }, () => toast("Presence ditolak. Cek UID owner di Rules.")));
+  unsubs.push(onValue(ref(db, "users"), s => {
+    allUsers = s.val() || {};
+    renderOwner();
+  }, () => toast("Tidak bisa membaca data. Cek Rules.")));
+  unsubs.push(onValue(ref(db, "presence"), s => {
+    presence = s.val() || {};
+    renderOwner();
+  }, () => toast("Presence ditolak. Cek UID owner di Rules.")));
 }
+
 $("ownSearch").oninput = () => renderOwner();
 $("ownLogout").onclick = doLogout;
+
 function renderOwner() {
   if (activeScreen() !== "owner") return;
   const q = $("ownSearch").value.trim().toLowerCase();
-  const arr = Object.entries(allUsers).map(([uid, u]) => ({ uid, ...u, online: !!(presence[uid] && presence[uid].online), last: presence[uid] && presence[uid].last }));
+  const arr = Object.entries(allUsers).map(([uid, u]) => ({
+    uid,
+    ...u,
+    online: !!(presence[uid] && presence[uid].online),
+    last: presence[uid] && presence[uid].last
+  }));
   $("stTotal").textContent = arr.length;
   $("stOnline").textContent = arr.filter(u => u.online).length;
   $("stVer").textContent = arr.filter(u => verified[u.uid]).length;
-  const rows = arr.filter(u => !q || (u.name + " " + u.username).toLowerCase().includes(q))
+  const rows = arr
+    .filter(u => !q || (u.name + " " + u.username).toLowerCase().includes(q))
     .sort((a, b) => (b.online - a.online) || a.name.localeCompare(b.name));
-  const box = $("ownList"); box.innerHTML = "";
-  if (!rows.length) { box.innerHTML = '<div class="empty"><div class="big">👥</div>Belum ada pengguna.</div>'; return; }
+  const box = $("ownList");
+  box.innerHTML = "";
+  if (!rows.length) {
+    box.innerHTML = '<div class="empty"><div class="big">👥</div>Belum ada pengguna.</div>';
+    return;
+  }
   rows.forEach(u => {
-    const el = document.createElement("div"); el.className = "item"; el.style.cursor = "default";
+    const el = document.createElement("div");
+    el.className = "item";
+    el.style.cursor = "default";
     el.innerHTML = '<div class="avatar"><span class="dot"></span></div><div class="info"><div class="nm"></div><div class="last"></div></div><button class="vbtn"></button>';
-    const av = el.querySelector(".avatar"), dot = av.querySelector(".dot");
-    setAvatar(av, u); av.appendChild(dot); dot.classList.toggle("on", u.online);
+    const av = el.querySelector(".avatar");
+    const dot = av.querySelector(".dot");
+    setAvatar(av, u);
+    av.appendChild(dot);
+    dot.classList.toggle("on", u.online);
     el.querySelector(".nm").appendChild(nameEl(u.name, u.uid));
     el.querySelector(".last").textContent = "@" + u.username + " • " + (u.online ? "Sedang login" : u.last ? "Terakhir " + new Date(u.last).toLocaleString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "Belum pernah login");
-    const b = el.querySelector(".vbtn"), isV = !!verified[u.uid];
-    b.textContent = isV ? "Cabut ✓" : "Beri ✓"; b.classList.toggle("rm", isV);
-    b.onclick = async () => { try { await set(ref(db, "verified/" + u.uid), isV ? null : true); toast(isV ? "Centang biru dicabut" : "Centang biru diberikan"); } catch { toast("Ditolak. Pastikan Rules owner benar."); } };
+    const b = el.querySelector(".vbtn");
+    const isV = !!verified[u.uid];
+    b.textContent = isV ? "Cabut ✓" : "Beri ✓";
+    b.classList.toggle("rm", isV);
+    b.onclick = async () => {
+      try {
+        await set(ref(db, "verified/" + u.uid), isV ? null : true);
+        toast(isV ? "Centang biru dicabut" : "Centang biru diberikan");
+      } catch {
+        toast("Ditolak. Pastikan Rules owner benar.");
+      }
+    };
     box.appendChild(el);
   });
 }
