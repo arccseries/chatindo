@@ -669,6 +669,30 @@ input:disabled{opacity:.55}
 }
 .vbtn.rm{background:rgba(255,93,99,.15);color:var(--danger)}
 
+/* ===== INFO GRUP / PENGATURAN ===== */
+.day{max-width:90%;text-align:center}
+.iav{width:84px;height:84px;font-size:34px;margin:0 auto 10px}
+.iphoto{margin-bottom:12px}
+.mem .pillbtn{padding:7px 12px;font-size:12px}
+.wallgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 12px}
+.wtile{
+  height:84px;
+  border-radius:16px;
+  border:2px solid transparent;
+  cursor:pointer;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding:6px;
+  font-family:inherit;
+  font-size:11.5px;
+  font-weight:700;
+  text-shadow:0 1px 3px rgba(0,0,0,.55);
+  outline:1px solid var(--line2);
+}
+.wtile.on{border-color:var(--green)}
+.ownerbar{padding:10px 12px 0}
+
 /* ===== MODAL ===== */
 .modal{
   position:fixed;
@@ -860,6 +884,7 @@ input:disabled{opacity:.55}
       <button id="mGrp">👥 Buat grup</button>
       <button id="mChan">📢 Buat saluran</button>
       <button id="mStatus">🟢 Buat status</button>
+      <button id="mSet">⚙️ Pengaturan</button>
       <button class="out" id="mLogout">⎋ Keluar</button>
     </div>
   </div>
@@ -923,7 +948,9 @@ input:disabled{opacity:.55}
     <div class="stat"><b id="stTotal">0</b><span>Pengguna</span></div>
     <div class="stat"><b id="stOnline">0</b><span>Sedang login</span></div>
     <div class="stat"><b id="stVer">0</b><span>Centang biru</span></div>
+    <div class="stat"><b id="stIdle">0</b><span>Nonaktif 30h</span></div>
   </div>
+  <div class="ownerbar"><button class="btn ghost" id="ownClean">🧹 Bersihkan chat akun nonaktif (30 hari)</button></div>
   <div class="searchbar show"><div class="field"><span>🔍</span><input id="ownSearch" placeholder="Cari pengguna"></div></div>
   <div class="list" id="ownList"></div>
 </div>
@@ -958,8 +985,11 @@ input:disabled{opacity:.55}
 <!-- MODAL INFO GRUP -->
 <div class="modal" id="imodal">
   <div class="box">
-    <h3 id="iTitle"></h3>
-    <p class="hint" id="iHint"></p>
+    <div class="avatar iav" id="iAv"></div>
+    <button class="btn ghost iphoto" id="iPhotoBtn" style="display:none">📷 Ganti foto</button>
+    <input type="file" id="infoPhoto" accept="image/*" hidden>
+    <h3 id="iTitle" style="text-align:center"></h3>
+    <p class="hint" id="iHint" style="text-align:center"></p>
     <div id="iMembers"></div>
     <div id="iAddWrap" style="margin-top:10px">
       <div class="row">
@@ -1003,6 +1033,22 @@ input:disabled{opacity:.55}
     <input type="file" id="statusPhoto" accept="image/*" hidden>
     <div class="err" id="statusErr"></div>
     <div class="row"><button class="btn ghost" id="statusCancel">Batal</button><button class="btn" id="statusPost">Posting</button></div>
+  </div>
+</div>
+
+<!-- MODAL PENGATURAN -->
+<div class="modal" id="setModal">
+  <div class="box">
+    <h3>Pengaturan ⚙️</h3>
+    <p class="hint">Wallpaper chat (tersimpan di perangkat ini)</p>
+    <div class="wallgrid" id="wallGrid"></div>
+    <div class="row">
+      <button class="btn ghost" id="wallPick">🖼️ Dari galeri</button>
+      <button class="btn ghost" id="wallReset">Atur ulang</button>
+    </div>
+    <input type="file" id="wallFile" accept="image/*" hidden>
+    <p class="hint" style="margin-top:16px">🕒 Akun yang tidak aktif 30 hari akan direset: chat pribadi dan keanggotaan grup/saluran dihapus. Akunmu tetap ada.</p>
+    <button class="btn" id="setClose">Tutup</button>
   </div>
 </div>
 
@@ -1089,6 +1135,7 @@ let renderTok = 0;
 let lastDay = "";
 let homeTab = "chat";
 let paneTab = "";
+let groupWatch = {};
 let statusPhotoData = "";
 
 const emailOf = n => n.trim().toLowerCase().replace(/\s+/g, "_") + "@chatindo.app";
@@ -1157,12 +1204,12 @@ function fmtListTime(ts) {
 const chatId = (a, b) => [a, b].sort().join("_");
 
 let toastT;
-function toast(msg) {
+function toast(msg, ms) {
   const t = $("toast");
   t.textContent = msg;
   t.classList.add("show");
   clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.remove("show"), 2200);
+  toastT = setTimeout(() => t.classList.remove("show"), ms || 2200);
 }
 
 function authMsg(code) {
@@ -1226,6 +1273,7 @@ function detach() {
   allChans = {};
   statusMap = {};
   presence = {};
+  groupWatch = {};
 }
 
 /* ===== LOGIN ===== */
@@ -1306,7 +1354,9 @@ onAuthStateChanged(auth, async user => {
   const snap = await get(ref(db, "users/" + user.uid));
   if (snap.exists()) {
     me = { uid: user.uid, ...snap.val() };
+    const wasReset = await checkInactiveReset();
     openHome();
+    if (wasReset) toast("Chat lamamu direset karena tidak aktif lebih dari " + INACTIVE_DAYS + " hari. Akunmu tetap ada.", 6500);
   } else {
     me = { uid: user.uid, name: user.displayName || "" };
     show("welcome");
@@ -1459,6 +1509,7 @@ function openHome() {
   }));
   unsubs.push(onValue(ref(db, "userGroups/" + me.uid), s => {
     grpMap = s.val() || {};
+    Object.keys(grpMap).forEach(watchGroup);
     refresh("chat");
   }));
   unsubs.push(onValue(ref(db, "userChannels/" + me.uid), s => {
@@ -1472,6 +1523,10 @@ function openHome() {
   unsubs.push(onValue(ref(db, "channels"), s => {
     allChans = s.val() || {};
     Object.entries(allChans).forEach(([id, v]) => chanCache[id] = { id, ...v });
+    if (current && current.type === "chan" && chanCache[current.chan.id]) {
+      current.chan = chanCache[current.chan.id];
+      repaintHead();
+    }
     refresh("chan");
   }));
 }
@@ -1637,7 +1692,7 @@ function chatItem(i) {
     nm.appendChild(nameEl(i.u.name, i.id));
     el.onclick = () => { if (el._lp) { el._lp = false; return; } openRoom({ type: "dm", user: i.u }); };
   } else {
-    setAvatar(av, null, i.g.name);
+    setAvatar(av, i.g, i.g.name);
     const tg = document.createElement("span");
     tg.className = "gtag";
     tg.textContent = "GRUP";
@@ -1813,7 +1868,7 @@ async function renderChannels(tok) {
     const el = document.createElement("div");
     el.className = "item";
     el.innerHTML = ITEM_HTML;
-    setAvatar(el.querySelector(".avatar"), null, r.ch.name);
+    setAvatar(el.querySelector(".avatar"), r.ch, r.ch.name);
     el.querySelector(".nm").appendChild(nameEl(r.ch.name));
     el.querySelector(".last").textContent = r.c.last || r.ch.desc || "";
     setMeta(el, r.c.ts, 0);
@@ -1830,7 +1885,7 @@ async function renderChannels(tok) {
     const el = document.createElement("div");
     el.className = "item";
     el.innerHTML = '<div class="avatar"></div><div class="info"><div class="nm"></div><div class="last"></div></div><button class="pillbtn">Ikuti</button>';
-    setAvatar(el.querySelector(".avatar"), null, r.ch.name);
+    setAvatar(el.querySelector(".avatar"), r.ch, r.ch.name);
     el.querySelector(".nm").appendChild(nameEl(r.ch.name));
     const cnt = Object.keys(r.ch.members || {}).length + " pengikut";
     el.querySelector(".last").textContent = (r.ch.desc ? r.ch.desc + " • " : "") + cnt;
@@ -1842,6 +1897,234 @@ async function renderChannels(tok) {
     box.appendChild(el);
   });
   done();
+}
+
+/* ===== HELPER GAMBAR ===== */
+function readImg(file) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onerror = rej;
+    fr.onload = () => {
+      const img = new Image();
+      img.onerror = rej;
+      img.onload = () => res(img);
+      img.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+async function squarePhoto(file, s, q) {
+  const img = await readImg(file);
+  const c = document.createElement("canvas");
+  c.width = c.height = s;
+  const m = Math.min(img.width, img.height);
+  c.getContext("2d").drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, s, s);
+  return c.toDataURL("image/jpeg", q);
+}
+
+async function scaledPhoto(file, maxW, q) {
+  const img = await readImg(file);
+  let w = img.width;
+  let h = img.height;
+  if (w > maxW) { h = h * maxW / w; w = maxW; }
+  const c = document.createElement("canvas");
+  c.width = w;
+  c.height = h;
+  c.getContext("2d").drawImage(img, 0, 0, w, h);
+  return c.toDataURL("image/jpeg", q);
+}
+
+/* ===== ADMIN GRUP ===== */
+const isGroupAdmin = (g, uid) => !!g && (g.creator === uid || !!(g.admins && g.admins[uid]));
+
+function watchGroup(gid) {
+  if (groupWatch[gid]) return;
+  const un = onValue(ref(db, "groups/" + gid), s => {
+    groupCache[gid] = s.exists() ? { id: gid, ...s.val() } : null;
+    if (current && current.type === "group" && current.group.id === gid && groupCache[gid]) {
+      current.group = groupCache[gid];
+      repaintHead();
+    }
+    refresh("chat");
+  }, () => {});
+  groupWatch[gid] = un;
+  unsubs.push(un);
+}
+
+async function sysMsg(g, text) {
+  try {
+    const ts = Date.now();
+    await push(ref(db, "groupMsgs/" + g.id), { from: me.uid, name: me.name, text, photo: "", sticker: "", vn: "", sys: true, ts });
+    const upd = {};
+    Object.keys(g.members || {}).forEach(u => upd["userGroups/" + u + "/" + g.id] = { last: text, ts });
+    await update(ref(db), upd);
+  } catch {}
+}
+
+function repaintHead() {
+  if (!current) return;
+  if (current.type === "group") {
+    const g = current.group;
+    setAvatar($("rAv"), g, g.name);
+    $("rName").replaceChildren(nameEl(g.name));
+    $("rSub").textContent = Object.keys(g.members || {}).length + " anggota • ketuk untuk info";
+  } else if (current.type === "chan") {
+    const ch = current.chan;
+    setAvatar($("rAv"), ch, ch.name);
+    $("rName").replaceChildren(nameEl("📢 " + ch.name));
+    $("rSub").textContent = (ch.desc || "") + ` • ${Object.keys(ch.members || {}).length} pengikut` + (ch.creator === me.uid ? " • Kamu admin" : " • Hanya admin bisa kirim");
+  }
+}
+
+/* ===== WALLPAPER + PENGATURAN ===== */
+const WALLS = [
+  { id: "dots",   name: "Titik",  css: "radial-gradient(rgba(255,255,255,.05) 1.5px,transparent 1.5px) 0 0/22px 22px,#0a0d12" },
+  { id: "black",  name: "Hitam",  css: "#000" },
+  { id: "slate",  name: "Abu",    css: "#1a1f26" },
+  { id: "green",  name: "Hijau",  css: "linear-gradient(160deg,#0b3d2a,#0a0d12)" },
+  { id: "blue",   name: "Biru",   css: "linear-gradient(160deg,#0f2f5c,#0a0d12)" },
+  { id: "purple", name: "Ungu",   css: "linear-gradient(160deg,#35165f,#0a0d12)" },
+  { id: "maroon", name: "Marun",  css: "linear-gradient(160deg,#4a1226,#0a0d12)" },
+  { id: "aurora", name: "Aurora", css: "linear-gradient(135deg,#0f766e,#312e81)" },
+  { id: "light",  name: "Terang", css: "radial-gradient(rgba(0,0,0,.07) 1.5px,transparent 1.5px) 0 0/22px 22px,#dfe7e1", tx: "#1b2a22" }
+];
+
+function wallState() {
+  let id = "dots";
+  let img = "";
+  try {
+    id = localStorage.getItem("ci_wall_" + me.uid) || "dots";
+    img = localStorage.getItem("ci_wallimg_" + me.uid) || "";
+  } catch {}
+  return { id, img };
+}
+
+function wallCss() {
+  const { id, img } = wallState();
+  if (id === "custom" && img) return 'url("' + img + '") center/cover no-repeat';
+  return (WALLS.find(w => w.id === id) || WALLS[0]).css;
+}
+
+function applyWall() {
+  if (me && !me.owner) $("msgs").style.background = wallCss();
+}
+
+function renderWallGrid() {
+  const g = $("wallGrid");
+  g.innerHTML = "";
+  const { id, img } = wallState();
+  const list = [...(img ? [{ id: "custom", name: "Foto saya", css: 'url("' + img + '") center/cover no-repeat' }] : []), ...WALLS];
+  list.forEach(w => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "wtile" + (w.id === id ? " on" : "");
+    b.style.background = w.css;
+    b.style.color = w.tx || "#fff";
+    b.textContent = w.name;
+    b.onclick = () => setWall(w.id);
+    g.appendChild(b);
+  });
+}
+
+function setWall(id) {
+  try { localStorage.setItem("ci_wall_" + me.uid, id); } catch {}
+  renderWallGrid();
+  applyWall();
+  toast("Wallpaper diganti");
+}
+
+function openSettings() {
+  renderWallGrid();
+  $("setModal").classList.add("show");
+}
+
+$("wallPick").onclick = () => $("wallFile").click();
+
+$("wallFile").onchange = async e => {
+  const f = e.target.files[0];
+  e.target.value = "";
+  if (!f) return;
+  try {
+    const data = await scaledPhoto(f, 720, .7);
+    localStorage.setItem("ci_wallimg_" + me.uid, data);
+    setWall("custom");
+  } catch {
+    toast("Foto gagal dipakai (terlalu besar atau tidak terbaca)");
+  }
+};
+
+$("wallReset").onclick = () => {
+  try { localStorage.removeItem("ci_wallimg_" + me.uid); } catch {}
+  setWall("dots");
+};
+
+$("setClose").onclick = () => $("setModal").classList.remove("show");
+
+/* ===== AKUN NONAKTIF 30 HARI ===== */
+const INACTIVE_DAYS = 30;
+const INACTIVE_MS = INACTIVE_DAYS * 24 * 60 * 60 * 1000;
+const isIdle = o => !!(o && !o.online && o.last && Date.now() - o.last > INACTIVE_MS);
+
+async function wipeUserChats(uid) {
+  const r = { dm: 0, grp: 0, chan: 0, err: 0 };
+  const read = async p => {
+    try { return (await get(ref(db, p))).val() || {}; } catch { r.err++; return {}; }
+  };
+  const del = async p => {
+    try { await set(ref(db, p), null); } catch { r.err++; }
+  };
+
+  // chat pribadi: thread-nya dihapus, entri di daftar kedua pihak ikut dihapus
+  const dms = await read("userChats/" + uid);
+  for (const pid of Object.keys(dms)) {
+    await del("chats/" + chatId(uid, pid));
+    await del("userChats/" + pid + "/" + uid);
+    await del("userChats/" + uid + "/" + pid);
+    r.dm++;
+  }
+
+  // grup: keluar dari semua grup, kecuali yang dia buat sendiri
+  const grps = await read("userGroups/" + uid);
+  for (const gid of Object.keys(grps)) {
+    const g = await read("groups/" + gid);
+    if (g.creator === uid) continue;
+    await del("groups/" + gid + "/members/" + uid);
+    await del("groups/" + gid + "/admins/" + uid);
+    await del("userGroups/" + uid + "/" + gid);
+    r.grp++;
+  }
+
+  // saluran: berhenti mengikuti, kecuali yang dia buat sendiri
+  const chs = await read("userChannels/" + uid);
+  for (const cid of Object.keys(chs)) {
+    const c = await read("channels/" + cid);
+    if (c.creator === uid) continue;
+    await del("channels/" + cid + "/members/" + uid);
+    await del("userChannels/" + uid + "/" + cid);
+    r.chan++;
+  }
+
+  await del("statuses/" + uid);
+  return r;
+}
+
+// Dipanggil sebelum presence di-update, jadi "last" masih waktu terakhir dia online.
+async function checkInactiveReset() {
+  try {
+    const p = (await get(ref(db, "presence/" + me.uid))).val();
+    if (!isIdle(p)) return false;
+    toast("Merapikan akunmu...", 8000);
+    await wipeUserChats(me.uid);
+    try {
+      const pre = "ci_seen_" + me.uid + "_";
+      Object.keys(localStorage).filter(k => k.startsWith(pre)).forEach(k => localStorage.removeItem(k));
+      localStorage.removeItem(pinKey());
+    } catch {}
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /* ===== LOGOUT ===== */
@@ -1865,6 +2148,7 @@ $("mAdd").onclick = () => { closeMenu(); openAddContact(); };
 $("mGrp").onclick = () => { closeMenu(); openGroupModal(); };
 $("mChan").onclick = () => { closeMenu(); openChanModal(); };
 $("mStatus").onclick = () => { closeMenu(); openStatusModal(); };
+$("mSet").onclick = () => { closeMenu(); openSettings(); };
 
 /* ===== TAMBAH KONTAK ===== */
 function openAddContact() {
@@ -2052,6 +2336,7 @@ function openRoom(target) {
   const box = $("msgs");
   box.innerHTML = "";
   lastDay = "";
+  applyWall();
   if (roomUnsub) roomUnsub();
   let path;
   let rk;
@@ -2065,14 +2350,14 @@ function openRoom(target) {
     rk = "d_" + chatId(me.uid, u.uid);
   } else if (target.type === "group") {
     const g = target.group;
-    setAvatar($("rAv"), null, g.name);
+    setAvatar($("rAv"), g, g.name);
     $("rName").replaceChildren(nameEl(g.name));
     $("rSub").textContent = Object.keys(g.members || {}).length + " anggota • ketuk untuk info";
     path = "groupMsgs/" + g.id;
     rk = "g_" + g.id;
   } else {
     const ch = target.chan;
-    setAvatar($("rAv"), null, ch.name);
+    setAvatar($("rAv"), ch, ch.name);
     $("rName").replaceChildren(nameEl("📢 " + ch.name));
     $("rSub").textContent = (ch.desc || "") + ` • ${Object.keys(ch.members || {}).length} pengikut` + (ch.creator === me.uid ? " • Kamu admin" : " • Hanya admin bisa kirim");
     path = "chanMsgs/" + ch.id;
@@ -2098,6 +2383,14 @@ function addMsg(m, isGroup) {
     c.className = "day";
     c.textContent = fmtDay(m.ts);
     box.appendChild(c);
+  }
+  if (m.sys) {
+    const sm = document.createElement("div");
+    sm.className = "day";
+    sm.textContent = m.text;
+    box.appendChild(sm);
+    box.scrollTop = box.scrollHeight;
+    return;
   }
   const mine = m.from === me.uid;
   const d = document.createElement("div");
@@ -2302,32 +2595,90 @@ function stopVN() {
 
 /* ===== INFO GRUP ===== */
 $("rHead").onclick = () => {
-  if (current && current.type === "group") openInfo();
+  if (current && (current.type === "group" || current.type === "chan")) openInfo();
 };
 
 async function openInfo() {
-  const g = await loadGroup(current.group.id, true);
+  if (!current) return;
+  const isGroup = current.type === "group";
+  const g = isGroup ? await loadGroup(current.group.id, true) : await loadChan(current.chan.id, true);
   if (!g) return;
-  current.group = g;
+  if (isGroup) current.group = g; else current.chan = g;
+  const admin = isGroup ? isGroupAdmin(g, me.uid) : g.creator === me.uid;
+  setAvatar($("iAv"), g, g.name);
   $("iTitle").textContent = g.name;
   $("iErr").textContent = "";
-  const ids = Object.keys(g.members || {});
-  $("iHint").textContent = ids.length + " anggota";
+  $("iPhotoBtn").style.display = admin ? "block" : "none";
+  $("iLeave").style.display = isGroup ? "" : "none";
   const box = $("iMembers");
   box.innerHTML = "";
-  for (const uid of ids) {
-    const u = await loadUser(uid);
-    const r = document.createElement("div");
-    r.className = "mem";
-    r.innerHTML = '<div class="avatar"></div><div style="flex:1;min-width:0"><div class="nmx"></div><small></small></div>';
-    setAvatar(r.querySelector(".avatar"), u);
-    r.querySelector(".nmx").appendChild(nameEl(u.name + (uid === me.uid ? " (Kamu)" : ""), uid));
-    r.querySelector("small").textContent = "@" + u.username + (uid === g.creator ? " • Pembuat grup" : "");
-    box.appendChild(r);
+  if (isGroup) {
+    const ids = Object.keys(g.members || {});
+    $("iHint").textContent = ids.length + " anggota";
+    const rank = uid => uid === g.creator ? 0 : (g.admins && g.admins[uid]) ? 1 : 2;
+    ids.sort((a, b) => rank(a) - rank(b));
+    for (const uid of ids) {
+      const u = await loadUser(uid);
+      const r = document.createElement("div");
+      r.className = "mem";
+      r.innerHTML = '<div class="avatar"></div><div style="flex:1;min-width:0"><div class="nmx"></div><small></small></div>';
+      setAvatar(r.querySelector(".avatar"), u);
+      r.querySelector(".nmx").appendChild(nameEl(u.name + (uid === me.uid ? " (Kamu)" : ""), uid));
+      const isAdm = !!(g.admins && g.admins[uid]);
+      const role = uid === g.creator ? "Pembuat grup" : isAdm ? "Admin" : "";
+      r.querySelector("small").textContent = "@" + u.username + (role ? " • " + role : "");
+      if (admin && uid !== me.uid && uid !== g.creator && (!isAdm || g.creator === me.uid)) {
+        const b = document.createElement("button");
+        b.className = "pillbtn g";
+        b.textContent = isAdm ? "Cabut admin" : "Jadikan admin";
+        b.onclick = () => toggleAdmin(g, u, !isAdm, b);
+        r.appendChild(b);
+      }
+      box.appendChild(r);
+    }
+  } else {
+    $("iHint").textContent = (g.desc ? g.desc + " • " : "") + Object.keys(g.members || {}).length + " pengikut";
   }
-  $("iAddWrap").style.display = g.creator === me.uid ? "block" : "none";
+  $("iAddWrap").style.display = isGroup && admin ? "block" : "none";
   $("imodal").classList.add("show");
 }
+
+async function toggleAdmin(g, u, makeAdmin, btn) {
+  $("iErr").textContent = "";
+  btn.disabled = true;
+  try {
+    await set(ref(db, "groups/" + g.id + "/admins/" + u.uid), makeAdmin ? true : null);
+    toast(makeAdmin ? u.name + " sekarang admin" : "Admin " + u.name + " dicabut");
+    await sysMsg(g, makeAdmin ? me.name + " menjadikan " + u.name + " admin" : me.name + " mencabut status admin " + u.name);
+    await openInfo();
+  } catch (e) {
+    btn.disabled = false;
+    $("iErr").textContent = "Gagal mengubah admin: " + e.message;
+  }
+}
+
+$("iPhotoBtn").onclick = () => $("infoPhoto").click();
+
+$("infoPhoto").onchange = async e => {
+  const f = e.target.files[0];
+  e.target.value = "";
+  if (!f || !current) return;
+  const isGroup = current.type === "group";
+  const obj = isGroup ? current.group : current.chan;
+  if (!obj) return;
+  $("iErr").textContent = "";
+  try {
+    const photo = await squarePhoto(f, 200, .72);
+    await set(ref(db, (isGroup ? "groups/" : "channels/") + obj.id + "/photo"), photo);
+    obj.photo = photo;
+    setAvatar($("iAv"), obj, obj.name);
+    repaintHead();
+    toast("Foto diperbarui");
+    if (isGroup) sysMsg(obj, me.name + " mengganti foto grup");
+  } catch (err) {
+    $("iErr").textContent = "Gagal mengganti foto: " + err.message;
+  }
+};
 
 $("iClose").onclick = () => $("imodal").classList.remove("show");
 
@@ -2355,6 +2706,7 @@ $("iLeave").onclick = async () => {
   try {
     await set(ref(db, "groups/" + g.id + "/members/" + me.uid), null);
     await set(ref(db, "userGroups/" + me.uid + "/" + g.id), null);
+    if (groupWatch[g.id]) { try { groupWatch[g.id](); } catch {} delete groupWatch[g.id]; }
     delete groupCache[g.id];
     $("imodal").classList.remove("show");
     if (roomUnsub) { roomUnsub(); roomUnsub = null; }
@@ -2385,6 +2737,23 @@ function openOwner() {
 $("ownSearch").oninput = () => renderOwner();
 $("ownLogout").onclick = doLogout;
 
+$("ownClean").onclick = async () => {
+  const targets = Object.keys(allUsers).filter(uid => isIdle(presence[uid]));
+  if (!targets.length) return toast("Tidak ada akun nonaktif ≥ " + INACTIVE_DAYS + " hari");
+  if (!confirm("Hapus chat pribadi dan keanggotaan grup/saluran dari " + targets.length + " akun yang nonaktif ≥ " + INACTIVE_DAYS + " hari?\n\nAkun tetap ada. Chat pribadi yang dihapus ikut hilang di sisi lawan bicaranya. Tidak bisa dibatalkan.")) return;
+  $("ownClean").disabled = true;
+  toast("Membersihkan...", 4000);
+  let errs = 0;
+  for (const uid of targets) {
+    try {
+      const r = await wipeUserChats(uid);
+      errs += r.err;
+    } catch { errs++; }
+  }
+  $("ownClean").disabled = false;
+  toast(errs ? "Selesai, tapi ada " + errs + " langkah ditolak. Cek Rules." : targets.length + " akun dibersihkan", 4500);
+};
+
 function renderOwner() {
   if (activeScreen() !== "owner") return;
   const q = $("ownSearch").value.trim().toLowerCase();
@@ -2397,6 +2766,7 @@ function renderOwner() {
   $("stTotal").textContent = arr.length;
   $("stOnline").textContent = arr.filter(u => u.online).length;
   $("stVer").textContent = arr.filter(u => verified[u.uid]).length;
+  $("stIdle").textContent = arr.filter(isIdle).length;
   const rows = arr
     .filter(u => !q || (u.name + " " + u.username).toLowerCase().includes(q))
     .sort((a, b) => (b.online - a.online) || a.name.localeCompare(b.name));
@@ -2417,6 +2787,7 @@ function renderOwner() {
     dot.classList.toggle("on", u.online);
     el.querySelector(".nm").appendChild(nameEl(u.name, u.uid));
     el.querySelector(".last").textContent = "@" + u.username + " • " + (u.online ? "Sedang login" : u.last ? "Terakhir " + new Date(u.last).toLocaleString("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "Belum pernah login");
+    if (isIdle(u)) el.querySelector(".last").textContent += " • ⏳ nonaktif";
     const b = el.querySelector(".vbtn");
     const isV = !!verified[u.uid];
     b.textContent = isV ? "Cabut ✓" : "Beri ✓";
